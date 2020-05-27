@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Мисинин](https://up.htmlacademy.ru/javascript/20/user/1087735).
-* Наставник: `Неизвестно`.
+* Наставник: Антон Попов.
 
 ---
 
