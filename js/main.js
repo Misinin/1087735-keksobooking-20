@@ -60,8 +60,8 @@ var getRandomArrayElement = function (array) {
  * @param {number} arrayLength - длина массива
  * @return {Object}
  */
-var getArrayWithRandomLength = function (array) {
-  return array.slice(0, getRandomNumber(0, array.length));
+var getArrayWithRandomLength = function (array, arrayLength) {
+  return array.slice(0, getRandomNumber(0, arrayLength));
 };
 
 /**
@@ -150,3 +150,169 @@ arrayObjects.forEach(function (element) {
 var mapPins = document.querySelector('.map__pins');
 
 mapPins.appendChild(fragment);
+
+var offerTemplate = document.querySelector('#card').content;
+var OfferItem = offerTemplate.querySelector('.map__card');
+var placeCardAdded = document.querySelector('.map');
+
+var createCardOffer = function (array, index) {
+  var clonedOfferItem = OfferItem.cloneNode(true);
+  var cardTitle = clonedOfferItem.querySelector('.popup__title');
+  var buildingAddress = clonedOfferItem.querySelector('.popup__text--address');
+  var checkTime = clonedOfferItem.querySelector('.popup__text--time');
+  var offerDescription = clonedOfferItem.querySelector('.popup__description');
+  var avatar = clonedOfferItem.querySelector('.popup__avatar');
+
+  if (array[index].offer.title) {
+    cardTitle.textContent = array[index].offer.title;
+  } else {
+    cardTitle.remove();
+  }
+
+  if (array[index].offer.address) {
+    buildingAddress.textContent = array[index].offer.address;
+  } else {
+    buildingAddress.remove();
+  }
+
+  if (array[index].offer.description) {
+    offerDescription.textContent = array[index].offer.description;
+  } else {
+    offerDescription.remove();
+  }
+
+  if (array[index].author.avatar) {
+    avatar.src = array[index].author.avatar;
+  } else {
+    avatar.remove();
+  }
+
+  if (array[index].offer.checkin && array[index].offer.checkout) {
+    checkTime.textContent = 'Заезд после ' + array[index].offer.checkin + ' выезд до ' + array[index].offer.checkout;
+  } else {
+    checkTime.remove();
+  }
+
+  /**
+   * Возвращает элемент price с контентом
+   * @return {Object}
+   */
+  var setOfferPrice = function () {
+    var priceOffer = clonedOfferItem.querySelector('.popup__text--price');
+    var HTMLCollectionPriceOffer = priceOffer.childNodes;
+
+    if (array[index].offer.price) {
+      HTMLCollectionPriceOffer[0].textContent = '';
+      priceOffer.insertAdjacentText('afterbegin', array[index].offer.price + '₽');
+    } else {
+      priceOffer.remove();
+    }
+
+    return priceOffer;
+  };
+
+  setOfferPrice();
+
+  /**
+   * Возвращает элемент с инфомацией о количестве гостей и комнат для них
+   * @return {Object}
+   */
+
+  var setGuestsAndRoomsInformation = function () {
+    var guestsAndRoomsInformation = clonedOfferItem.querySelector('.popup__text--capacity');
+
+    if (array[index].offer.rooms === 1 && array[index].offer.guests === 1) {
+      guestsAndRoomsInformation.textContent = array[0].offer.rooms + ' комната для ' + array[index].offer.guests + ' гостя';
+    }
+    if (array[index].offer.rooms >= 2 && array[index].offer.rooms <= 4) {
+      guestsAndRoomsInformation.textContent = array[0].offer.rooms + ' комнаты для ' + array[index].offer.guests + ' гостей';
+    }
+    if (array[index].offer.rooms >= 2 && array[index].offer.rooms <= 4 && array[index].offer.guests === 1) {
+      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнаты для ' + array[index].offer.guests + ' гостя';
+    }
+    if (array[index].offer.rooms > 5) {
+      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнат для ' + array[index].offer.guests + ' гостей';
+    }
+    if (array[index].offer.rooms > 5 && array[index].offer.guests === 1) {
+      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнат для ' + array[index].offer.guests + ' гостя';
+    }
+    return guestsAndRoomsInformation;
+  };
+
+  setGuestsAndRoomsInformation();
+
+  /**
+   * Возвращает элемент с инфомацией о типе здания
+   * @return {Object}
+   */
+
+  var setTypeBuilding = function () {
+    var buildingType = clonedOfferItem.querySelector('.popup__type');
+
+    switch (array[index].offer.type) {
+      case 'flat':
+        buildingType.textContent = 'Квартира';
+        break;
+      case 'bungalo':
+        buildingType.textContent = 'Бунгало';
+        break;
+      case 'house':
+        buildingType.textContent = 'Дом';
+        break;
+      case 'palace':
+        buildingType.textContent = 'Дворец';
+        break;
+      default:
+        buildingType.remove();
+        break;
+    }
+
+    return buildingType;
+  };
+
+  setTypeBuilding();
+
+  var setFeaturesBuilding = function () {
+    var availableFeatures = clonedOfferItem.querySelector('.popup__features');
+    var featuresFragment = document.createDocumentFragment();
+    var featuresArray = array[index].offer.features;
+    if (featuresArray.length) {
+      for (var i = 0; i < featuresArray.length; i++) {
+        var featureItem = document.createElement('li');
+        featureItem.classList = 'popup__feature popup__feature--' + featuresArray[i];
+        featuresFragment.appendChild(featureItem);
+      }
+    } else {
+      availableFeatures.remove();
+    }
+    availableFeatures.innerHTML = '';
+    availableFeatures.appendChild(featuresFragment);
+    return availableFeatures;
+  };
+
+  setFeaturesBuilding();
+
+  var setBuildingPhotos = function () {
+    var photosForOffer = clonedOfferItem.querySelector('.popup__photos');
+    var photoItemTemplate = photosForOffer.querySelector('img');
+    var photoItem = photoItemTemplate.cloneNode();
+    var photosArray = array[index].offer.photos;
+    var photosFragment = document.createDocumentFragment();
+    if (photosArray) {
+      photosArray.forEach(function (element) {
+        photoItem.src = element;
+        photosFragment.appendChild(photoItem);
+      });
+    } else {
+      photosForOffer.remove();
+    }
+    photoItemTemplate.remove();
+    return photosForOffer.appendChild(photosFragment);
+  };
+
+  setBuildingPhotos();
+
+  return clonedOfferItem;
+};
+
+placeCardAdded.appendChild(createCardOffer(arrayObjects, 4));
