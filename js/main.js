@@ -21,30 +21,6 @@ var photos = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
-/**
- * Возвращает массив от 1 до максимального значения по возрастанию, максимальное значение задается
- * @param {number} maxIndexValue - максимальное значение в массиве
- * @return {Object}
- */
-var getIndexesAvatars = function (maxIndexValue) {
-  var arrayIndexes = [];
-  for (var i = 1; i <= maxIndexValue; i++) {
-    arrayIndexes.push(i);
-  }
-  return arrayIndexes;
-};
-
-/**
- * Выбирает первый элемент из массива, возвращает его и удаляет
- * @param {Object} arr - массив значений номеров аватарки
- * @return {number}
- */
-var getElementAndDelete = function (arr) {
-  var number = arr.shift();
-  return number;
-};
-
-var avatarIndexes = getIndexesAvatars(NUMBER_OF_OBJECTS);
 
 /**
  * Возвращает случайное число, максимум и минимум включаются
@@ -59,11 +35,12 @@ var getRandomNumber = function (min, max) {
 
 /**
  * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
+ * @param {number} index -индекс для значения адреса аватарки
  * @return {Object}
  */
-var generateAuthorObject = function () {
+var generateAuthorObject = function (index) {
   var author = {};
-  author.avatar = 'img/avatars/user0' + getElementAndDelete(avatarIndexes) + '.png';
+  author.avatar = 'img/avatars/user0' + (index + 1) + '.png';
   return author;
 };
 
@@ -120,11 +97,12 @@ var generateLocationObject = function () {
 
 /**
  * Возвращает объект с рандомными свойствами
+ *@param {number} index - индекс для значения адреса аватарки
  * @return {Object}
  */
-var generateRandomObject = function () {
+var generateRandomObject = function (index) {
   var randomObject = {};
-  randomObject.author = generateAuthorObject();
+  randomObject.author = generateAuthorObject(index);
   randomObject.offer = generateRandomOffer();
   randomObject.location = generateLocationObject();
   return randomObject;
@@ -138,7 +116,7 @@ var generateRandomObject = function () {
 var createArrayObjects = function (quantity) {
   var arrayObjects = [];
   for (var i = 0; i < quantity; i++) {
-    arrayObjects.push(generateRandomObject());
+    arrayObjects.push(generateRandomObject(i));
   }
   return arrayObjects;
 };
