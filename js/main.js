@@ -1,9 +1,11 @@
 'use strict';
 
-var MIN_Y_LOCATION = 130;
-var MAX_Y_LOCATION = 630;
-var MIN_X_LOCATION = 0;
-var MAX_X_LOCATION = 1200;
+var Locations = {
+  MIN_Y_LOCATION: 130,
+  MAX_Y_LOCATION: 630,
+  MIN_X_LOCATION: 0,
+  MAX_X_LOCATION: 1200
+};
 var MIN_PRICE = 1000;
 var MAX_PRICE = 10000;
 var MIN_ROOMS = 1;
@@ -13,10 +15,17 @@ var MAX_GUESTS = 10;
 var OFFSET_X_FORPIN = 25;
 var OFFSET_Y_FORPIN = 70;
 var NUMBER_OF_OBJECTS = 8;
-var buildings = ['palace', 'flat', 'house', 'bungalo'];
-var checkin = ['12:00', '13:00', '14:00'];
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photos = [
+var Types = {
+  PALACE: 'Дворец',
+  FLAT: 'Квартира',
+  HOUSE: 'Дом',
+  BUNGALO: 'Бунгало'
+};
+var CHECKIN_OUT = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher',
+  'parking', 'washer',
+  'elevator', 'conditioner'];
+var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
@@ -28,291 +37,270 @@ var photos = [
  * @param {number} max - максимальное значение числа
  * @return {number}
  */
-var getRandomNumber = function (min, max) {
+function getRandomNumber(min, max) {
   var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   return randomNumber;
-};
+}
 
 /**
  * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
  * @param {number} index -индекс для значения адреса аватарки
  * @return {Object}
  */
-var generateAuthorObject = function (index) {
-  var author = {};
-  author.avatar = 'img/avatars/user0' + (index + 1) + '.png';
-  return author;
-};
+function generateAuthorObject(index) {
+  return {
+    avatar: 'img/avatars/user0' + (index + 1) + '.png',
+  };
+}
 
 /**
  * Возвращает значение случайно выбранного элемента массива
- * @param {Object} array - массив из которого нужно получить случайный элемент
+ * @param {Object} selectedArray - массив из которого нужно получить
+ *                                 случайный элемент
  * @return {string}
  */
-var getRandomArrayElement = function (array) {
-  var randomArrayElement = array[getRandomNumber(0, array.length - 1)];
-  return randomArrayElement;
-};
+function getRandomArrayElement(selectedArray) {
+  return selectedArray[getRandomNumber(0, selectedArray.length - 1)];
+}
 
 /**
  *Возвращает массив случайной длины
- * @param {Object} array - массив с элементами
+ * @param {Object} arrayToProcess - Обрабатываемый массив
  * @param {number} arrayLength - длина массива
  * @return {Object}
  */
-var getArrayWithRandomLength = function (array, arrayLength) {
-  return array.slice(0, getRandomNumber(0, arrayLength));
-};
+function getArrayWithRandomLength(arrayToProcess, arrayLength) {
+  return arrayToProcess.slice(0, getRandomNumber(0, arrayLength));
+}
 
 /**
  * Возвращает объект offer со случайно полученными значениями свойств
  * @return {Object}
  */
-var generateRandomOffer = function () {
-  var objectOffer = {};
-  objectOffer.title = 'Заголовок предложения';
-  objectOffer.address = getRandomNumber(MIN_X_LOCATION, MAX_X_LOCATION) + ', ' + getRandomNumber(MIN_Y_LOCATION, MAX_Y_LOCATION);
-  objectOffer.price = getRandomNumber(MIN_PRICE, MAX_PRICE);
-  objectOffer.type = getRandomArrayElement(buildings);
-  objectOffer.rooms = getRandomNumber(MIN_ROOMS, MAX_ROOMS);
-  objectOffer.guests = getRandomNumber(MIN_GUESTS, MAX_GUESTS);
-  objectOffer.checkin = getRandomArrayElement(checkin);
-  objectOffer.checkout = getRandomArrayElement(checkin);
-  objectOffer.features = getArrayWithRandomLength(features, features.length);
-  objectOffer.description = 'Описание';
-  objectOffer.photos = getArrayWithRandomLength(photos, photos.length);
-  return objectOffer;
-};
+function generateRandomOffer() {
+  return {
+    title: 'Заголовок предложения',
+    address: getRandomNumber(Locations.MIN_X_LOCATION, Locations.MAX_X_LOCATION)
+    + ', ' + getRandomNumber(Locations.MIN_Y_LOCATION, Locations.MAX_Y_LOCATION),
+    price: getRandomNumber(MIN_PRICE, MAX_PRICE),
+    type: getRandomArrayElement(Object.keys(Types)),
+    rooms: getRandomNumber(MIN_ROOMS, MAX_ROOMS),
+    guests: getRandomNumber(MIN_GUESTS, MAX_GUESTS),
+    checkin: getRandomArrayElement(CHECKIN_OUT),
+    checkout: getRandomArrayElement(CHECKIN_OUT),
+    features: getArrayWithRandomLength(FEATURES, FEATURES.length),
+    description: 'Описание',
+    photos: getArrayWithRandomLength(PHOTOS, PHOTOS.length)
+  };
+}
 
 /**
-* Возвращает объект location со свойствaми координат x и y, cлучайно сгенерированые.
+* Возвращает объект location со свойствaми координат x и y,
+  cлучайно сгенерированые.
 * @return {Object}
 */
-var generateLocationObject = function () {
-  var location = {};
-  location.x = getRandomNumber(MIN_X_LOCATION, MAX_X_LOCATION);
-  location.y = getRandomNumber(MIN_Y_LOCATION, MAX_Y_LOCATION);
-  return location;
-};
+function generateLocationObject() {
+  return {
+    x: getRandomNumber(Locations.MIN_X_LOCATION, Locations.MAX_X_LOCATION),
+    y: getRandomNumber(Locations.MIN_Y_LOCATION, Locations.MAX_Y_LOCATION)
+  };
+}
 
 /**
- * Возвращает объект с рандомными свойствами
- *@param {number} index - индекс для значения адреса аватарки
+ * Возвращает объект предложения с рандомными свойствами
+ * @param {number} index - индекс для значения адреса аватарки
  * @return {Object}
  */
-var generateRandomObject = function (index) {
-  var randomObject = {};
-  randomObject.author = generateAuthorObject(index);
-  randomObject.offer = generateRandomOffer();
-  randomObject.location = generateLocationObject();
-  return randomObject;
-};
+function generateRandomObject(index) {
+  return {
+    author: generateAuthorObject(index),
+    offer: generateRandomOffer(),
+    location: generateLocationObject(),
+  };
+}
 
 /**
- * Возвращает массив объектов заданной длины
+ * Возвращает массив заданной длины, элементы массива объекты предложения
  * @param {number} quantity - количесвто объектов в массиве
  * @return {Object}
  */
-var createArrayObjects = function (quantity) {
-  var arrayObjects = [];
+function generateObjects(quantity) {
+  var Objects = [];
   for (var i = 0; i < quantity; i++) {
-    arrayObjects.push(generateRandomObject(i));
+    Objects.push(generateRandomObject(i));
   }
-  return arrayObjects;
-};
+  return Objects;
+}
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-var templateObject = document.querySelector('#pin').content.querySelector('.map__pin');
+var templateObject = document.querySelector('#pin').content
+                    .querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
+map.classList.remove('map--faded');
 
 /**
- * Возвращает разметку метки добавляя в нее свойства полученного объекта
+ * Возвращает разметку метки, добавляя в нее свойства полученного объекта
  * @param {Object} resultingObject - полученный объект
  * @return {Object}
  */
-var createHtmlMarkingObject = function (resultingObject) {
+function createHtmlMarkingObject(resultingObject) {
   var objectElement = templateObject.cloneNode(true);
 
-  objectElement.style = 'left: ' + (resultingObject.location.x - OFFSET_X_FORPIN) + 'px; top: ' + (resultingObject.location.y - OFFSET_Y_FORPIN) + 'px;';
+  objectElement.style = 'left: ' +
+  (resultingObject.location.x - OFFSET_X_FORPIN) +
+  'px; top: ' + (resultingObject.location.y - OFFSET_Y_FORPIN) + 'px;';
   objectElement.querySelector('img').src = resultingObject.author.avatar;
   objectElement.querySelector('img').alt = resultingObject.offer.title;
 
   return objectElement;
-};
+}
 
-var arrayObjects = createArrayObjects(NUMBER_OF_OBJECTS);
+var adObjects = generateObjects(NUMBER_OF_OBJECTS);
 
-arrayObjects.forEach(function (element) {
-  fragment.appendChild(createHtmlMarkingObject(element));
-});
+/**
+ * Перебирает массив сгенерированных объектов предложений и отображает их пинами
+ * на странице
+ * @return {Object}
+ */
+function renderPins() {
+  adObjects.forEach(function (pin) {
+    fragment.appendChild(createHtmlMarkingObject(pin));
+  });
 
-var mapPins = document.querySelector('.map__pins');
+  var mapPins = document.querySelector('.map__pins');
 
-mapPins.appendChild(fragment);
+  return mapPins.appendChild(fragment);
+}
+renderPins();
 
 var offerTemplate = document.querySelector('#card').content;
-var OfferItem = offerTemplate.querySelector('.map__card');
+var offerItem = offerTemplate.querySelector('.map__card');
 var placeCardAdded = document.querySelector('.map');
 
-var createCardOffer = function (array, index) {
-  var clonedOfferItem = OfferItem.cloneNode(true);
-  var cardTitle = clonedOfferItem.querySelector('.popup__title');
-  var buildingAddress = clonedOfferItem.querySelector('.popup__text--address');
-  var checkTime = clonedOfferItem.querySelector('.popup__text--time');
-  var offerDescription = clonedOfferItem.querySelector('.popup__description');
-  var avatar = clonedOfferItem.querySelector('.popup__avatar');
+/**
+ * Наполняет контентом шаблон карточки предложения, отрисовывает ее и возвращает
+ * @param {Object} objectOffer
+ * @return {Object}
+ */
+function renderCardOffer(objectOffer) {
+  var clonedOfferItem = offerItem.cloneNode(true);
+  clonedOfferItem.querySelector('.popup__title').textContent = objectOffer
+                                                              .offer
+                                                              .title;
+  clonedOfferItem.querySelector('.popup__text--address').textContent = objectOffer
+                                                                      .offer
+                                                                      .address;
+  clonedOfferItem.querySelector('.popup__text--time').textContent = 'Заезд после ' +
+  objectOffer.offer.checkin + ' выезд до ' + objectOffer.offer.checkout;
+  clonedOfferItem.querySelector('.popup__description').textContent = objectOffer
+                                                                     .offer
+                                                                     .description;
+  clonedOfferItem.querySelector('.popup__avatar').src = objectOffer.author.avatar;
+  clearFieldOfferPrice();
+  clonedOfferItem.querySelector('.popup__text--price').
+                insertAdjacentText('afterbegin', objectOffer.offer.price + '₽');
+  var rooms = objectOffer.offer.rooms;
+  var guests = objectOffer.offer.guests;
+  clonedOfferItem.querySelector('.popup__text--capacity').textContent =
+  rooms +
+  getPluralForm(rooms, 'комнатa', 'комнаты', 'комнат') + 'для ' + guests +
+  getPluralForm(guests, 'комнатa', 'комнаты', 'комнат');
+  clearFieldFeatures();
+  clonedOfferItem.querySelector('.popup__features')
+    .appendChild(createFeaturesFragment());
+  clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment());
 
-  if (array[index].offer.title) {
-    cardTitle.textContent = array[index].offer.title;
-  } else {
-    cardTitle.remove();
-  }
-
-  if (array[index].offer.address) {
-    buildingAddress.textContent = array[index].offer.address;
-  } else {
-    buildingAddress.remove();
-  }
-
-  if (array[index].offer.description) {
-    offerDescription.textContent = array[index].offer.description;
-  } else {
-    offerDescription.remove();
-  }
-
-  if (array[index].author.avatar) {
-    avatar.src = array[index].author.avatar;
-  } else {
-    avatar.remove();
-  }
-
-  if (array[index].offer.checkin && array[index].offer.checkout) {
-    checkTime.textContent = 'Заезд после ' + array[index].offer.checkin + ' выезд до ' + array[index].offer.checkout;
-  } else {
-    checkTime.remove();
-  }
+  // /**
+  //  * Проверяет наличие контента в поле, при его отсутствии удалет поле
+  //  * @param {string} field
+  //  */
+  // function isFieldEmpty (field) {
+  //   if (field === false) {
+  //     field.remove();
+  //   }
+  // }
 
   /**
-   * Возвращает элемент price с контентом
-   * @return {Object}
+   * Убирает шаблонное значение цены предложения
    */
-  var setOfferPrice = function () {
+  function clearFieldOfferPrice() {
     var priceOffer = clonedOfferItem.querySelector('.popup__text--price');
-    var HTMLCollectionPriceOffer = priceOffer.childNodes;
-
-    if (array[index].offer.price) {
-      HTMLCollectionPriceOffer[0].textContent = '';
-      priceOffer.insertAdjacentText('afterbegin', array[index].offer.price + '₽');
-    } else {
-      priceOffer.remove();
-    }
-
-    return priceOffer;
-  };
-
-  setOfferPrice();
+    var hTMLCollectionPriceOffer = priceOffer.childNodes;
+    hTMLCollectionPriceOffer[0].textContent = '';
+  }
 
   /**
-   * Возвращает элемент с инфомацией о количестве гостей и комнат для них
-   * @return {Object}
+   * Возвращает корректную форму множественного числа. Функция применима только
+   * для целых чисел.
+   * @param {number} number - число, для вычисляется формы записи наименования
+   * @param {string} one - форма наименования единственного числа
+   * @param {string} two - форма наименования множественного числа 2,3,4
+   * @param {string} many - форма наименования множественного остальные числа
+   * @return {string} форма множественного числа наименования
    */
+  function getPluralForm(number, one, two, many) {
+    var mod10 = number % 10;
+    var mod100 = number % 100;
 
-  var setGuestsAndRoomsInformation = function () {
-    var guestsAndRoomsInformation = clonedOfferItem.querySelector('.popup__text--capacity');
+    switch (true) {
+      case (mod100 >= 11 && mod100 <= 20):
+        return many;
 
-    if (array[index].offer.rooms === 1 && array[index].offer.guests === 1) {
-      guestsAndRoomsInformation.textContent = array[0].offer.rooms + ' комната для ' + array[index].offer.guests + ' гостя';
-    }
-    if (array[index].offer.rooms >= 2 && array[index].offer.rooms <= 4) {
-      guestsAndRoomsInformation.textContent = array[0].offer.rooms + ' комнаты для ' + array[index].offer.guests + ' гостей';
-    }
-    if (array[index].offer.rooms >= 2 && array[index].offer.rooms <= 4 && array[index].offer.guests === 1) {
-      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнаты для ' + array[index].offer.guests + ' гостя';
-    }
-    if (array[index].offer.rooms > 5) {
-      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнат для ' + array[index].offer.guests + ' гостей';
-    }
-    if (array[index].offer.rooms > 5 && array[index].offer.guests === 1) {
-      guestsAndRoomsInformation.textContent = array[index].offer.rooms + ' комнат для ' + array[index].offer.guests + ' гостя';
-    }
-    return guestsAndRoomsInformation;
-  };
+      case (mod10 > 5):
+        return many;
 
-  setGuestsAndRoomsInformation();
+      case (mod10 >= 2 && mod10 <= 4):
+        return two;
 
-  /**
-   * Возвращает элемент с инфомацией о типе здания
-   * @return {Object}
-   */
+      case (mod10 === 1):
+        return one;
 
-  var setTypeBuilding = function () {
-    var buildingType = clonedOfferItem.querySelector('.popup__type');
-
-    switch (array[index].offer.type) {
-      case 'flat':
-        buildingType.textContent = 'Квартира';
-        break;
-      case 'bungalo':
-        buildingType.textContent = 'Бунгало';
-        break;
-      case 'house':
-        buildingType.textContent = 'Дом';
-        break;
-      case 'palace':
-        buildingType.textContent = 'Дворец';
-        break;
       default:
-        buildingType.remove();
-        break;
+        return many;
     }
+  }
+  /**
+   * Очищает поле features
+   */
+  function clearFieldFeatures() {
+    clonedOfferItem.querySelector('.popup__features').innerHTML = '';
+  }
 
-    return buildingType;
-  };
-
-  setTypeBuilding();
-
-  var setFeaturesBuilding = function () {
-    var availableFeatures = clonedOfferItem.querySelector('.popup__features');
+  /**
+   * Созадет фрагмент разметки features и возвращает его
+   * @return {Object}
+   */
+  function createFeaturesFragment() {
     var featuresFragment = document.createDocumentFragment();
-    var featuresArray = array[index].offer.features;
-    if (featuresArray.length) {
-      for (var i = 0; i < featuresArray.length; i++) {
-        var featureItem = document.createElement('li');
-        featureItem.classList = 'popup__feature popup__feature--' + featuresArray[i];
-        featuresFragment.appendChild(featureItem);
-      }
-    } else {
-      availableFeatures.remove();
+    var featuresArray = objectOffer.offer.features;
+    for (var i = 0; i < featuresArray.length; i++) {
+      var featureItem = document.createElement('li');
+      featureItem.classList = 'popup__feature popup__feature--' + featuresArray[i];
+      featuresFragment.appendChild(featureItem);
     }
-    availableFeatures.innerHTML = '';
-    availableFeatures.appendChild(featuresFragment);
-    return availableFeatures;
-  };
 
-  setFeaturesBuilding();
+    return featuresFragment;
+  }
 
-  var setBuildingPhotos = function () {
+  /**
+   * Созадет фрагмент фотографий здания и возвращает его
+   * @return {Object}
+   */
+  function createBuildingPhotosFragment() {
     var photosForOffer = clonedOfferItem.querySelector('.popup__photos');
     var photoItemTemplate = photosForOffer.querySelector('img');
     var photoItem = photoItemTemplate.cloneNode();
-    var photosArray = array[index].offer.photos;
+    var photosArray = objectOffer.offer.photos;
     var photosFragment = document.createDocumentFragment();
-    if (photosArray) {
-      photosArray.forEach(function (element) {
-        photoItem.src = element;
-        photosFragment.appendChild(photoItem);
-      });
-    } else {
-      photosForOffer.remove();
-    }
+    photosArray.forEach(function (element) {
+      photoItem.src = element;
+      photosFragment.appendChild(photoItem);
+    });
     photoItemTemplate.remove();
-    return photosForOffer.appendChild(photosFragment);
-  };
-
-  setBuildingPhotos();
+    return photosFragment;
+  }
 
   return clonedOfferItem;
-};
+}
 
-placeCardAdded.appendChild(createCardOffer(arrayObjects, 4));
+placeCardAdded.appendChild(renderCardOffer(adObjects[0]));
