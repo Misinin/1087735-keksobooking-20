@@ -136,7 +136,6 @@ var map = document.querySelector('.map');
 var templateObject = document.querySelector('#pin').content
                     .querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
-map.classList.remove('map--faded');
 
 /**
  * Возвращает разметку метки, добавляя в нее свойства полученного объекта
@@ -171,6 +170,7 @@ function renderPins() {
 
   return mapPins.appendChild(fragment);
 }
+
 renderPins();
 
 var offerTemplate = document.querySelector('#card').content;
@@ -210,15 +210,15 @@ function renderCardOffer(objectOffer) {
     .appendChild(createFeaturesFragment());
   clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment());
 
-  // /**
-  //  * Проверяет наличие контента в поле, при его отсутствии удалет поле
-  //  * @param {string} field
-  //  */
-  // function isFieldEmpty (field) {
-  //   if (field === false) {
-  //     field.remove();
-  //   }
-  // }
+  /**
+   * Проверяет наличие контента в поле, при его отсутствии удалет поле
+   * @param {string} field
+   */
+  function isFieldEmpty (field) {
+    if (field === false) {
+      field.remove();
+    }
+  }
 
   /**
    * Убирает шаблонное значение цены предложения
@@ -304,3 +304,102 @@ function renderCardOffer(objectOffer) {
 }
 
 placeCardAdded.appendChild(renderCardOffer(adObjects[0]));
+
+setActivateOrDisabledFormElements((document.querySelector('.ad-form')), true);
+setActivateOrDisabledFormElements((document.querySelector('.map__filters')), true);
+document.querySelector('.map__pin--main').tabIndex = '0';
+
+document.querySelector('.map__pin--main').addEventListener('keydown', function (evt) {
+  isKeyPress(evt, 'Enter', pageActivation);
+});
+
+document.querySelector('.map__pin--main').addEventListener('mousedown', function (evt) {
+  if (evt.which === 1) {
+    pageActivation();
+    setValueAddressField();
+  }
+});
+
+/**
+ * Выполняет проверку нажатия клавиши и запускает переданную функцию
+ * @param {Object} evt - объект события
+ * @param {string} key - проверяемая клавиша
+ * @param {Object} selectedFunction - вызываемая функция
+ */
+function isKeyPress(evt, key, selectedFunction) {
+  if (evt.key === key) {
+    selectedFunction();
+  }
+}
+
+/**
+ *Устанавливает логическое значение атрибуту disabled всем элементам формы
+ * @param {Object} pseudoArrayParent - родительский элемент псевдо-массива формы
+ * @param {boolean} state - логическое состояние атрибута disabled элемента формы
+ */
+function setActivateOrDisabledFormElements(pseudoArrayParent, state) {
+  pseudoArrayParent.childNodes.forEach(function (formElement) {
+    formElement.disabled = state;
+  }
+  );
+}
+
+/**
+ * Устанавливает значение поля ввода адреса и устанавливает ему режим - только
+ * для чтения
+ */
+function setValueAddressField() {
+  document.querySelector('.map__pin--main').addEventListener('mouseup', function (evt) {
+    document.querySelector('#address').value = (evt.pageX - OFFSET_X_FORPIN) + ', ' +
+    (evt.pageX - OFFSET_Y_FORPIN);
+    document.querySelector('#address').readOnly = true;
+  });
+}
+
+var MinimumPrices = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+/**
+ * Устанавливает минимальное значение поля 'Цена за ночь' в зависимости от
+ * выбранного типа жилья
+ */
+function setPriceOfBuilding() {
+  var buildingPrice = document.querySelector('#price');
+  var typeBuilding = document.querySelector('#type').value;
+
+  buildingPrice.min = MinimumPrices[typeBuilding];
+  buildingPrice.placeholder = MinimumPrices[typeBuilding];
+}
+
+var roomNumber = document.querySelector('#room_number');
+var capacityBuilding = document.querySelector('#capacity');
+
+/**
+ * Переводит страницу в активное состояние
+ */
+function pageActivation() {
+  setActivateOrDisabledFormElements((document.querySelector('.ad-form')), false);
+  setActivateOrDisabledFormElements((document.querySelector('.map__filters')), false);
+  document.querySelector('.ad-form').action = 'https://javascript.pages.academy/keksobooking';
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  document.querySelector('.map__filters').style.opacity = 1;
+  document.querySelector('#type').addEventListener('change', setPriceOfBuilding);
+
+  var timeFields = document.querySelector('.ad-form__element--time');
+
+  /**
+   * Выполняет выбор поля option соседнего selecta, в зависимости от выбранного
+   *ранее
+   */
+  timeFields.addEventListener('change', function (evt) {
+    var indexOfSelectedItem = evt.target.selectedIndex;
+    var selectFields = timeFields.querySelectorAll('select');
+    selectFields.forEach(function (selectItem) {
+      selectItem.selectedIndex = indexOfSelectedItem;
+    });
+  });
+}
