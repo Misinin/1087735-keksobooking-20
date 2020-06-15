@@ -305,21 +305,6 @@ function renderCardOffer(objectOffer) {
 
 placeCardAdded.appendChild(renderCardOffer(adObjects[0]));
 
-setActivateOrDisabledFormElements((document.querySelector('.ad-form')), true);
-setActivateOrDisabledFormElements((document.querySelector('.map__filters')), true);
-document.querySelector('.map__pin--main').tabIndex = '0';
-
-document.querySelector('.map__pin--main').addEventListener('keydown', function (evt) {
-  isKeyPress(evt, 'Enter', pageActivation);
-});
-
-document.querySelector('.map__pin--main').addEventListener('mousedown', function (evt) {
-  if (evt.which === 1) {
-    pageActivation();
-    setValueAddressField();
-  }
-});
-
 /**
  * Выполняет проверку нажатия клавиши и запускает переданную функцию
  * @param {Object} evt - объект события
@@ -426,17 +411,47 @@ function selectCheckInOutValue(evt) {
   });
 }
 
+function setPageInactiveState() {
+  setActivateOrDisabledFormElements((document.querySelector('.ad-form')), true);
+  setActivateOrDisabledFormElements((document.querySelector('.map__filters')), true);
+  document.querySelector('.map__pin--main').tabIndex = '0';
+  document.querySelector('.map__pin--main').addEventListener('keydown', function (evt) {
+    isKeyPress(evt, 'Enter', setPageActivate);
+  });
+  document.querySelector('.map__pin--main').addEventListener('mousedown', function (evt) {
+    if (evt.which === 1) {
+      setPageActivate();
+      setValueAddressField();
+    }
+  });
+}
+
 /**
  * Переводит страницу в активное состояние
  */
-function pageActivation() {
+function setPageActivate() {
   setActivateOrDisabledFormElements((document.querySelector('.ad-form')), false);
   setActivateOrDisabledFormElements((document.querySelector('.map__filters')), false);
-  document.querySelector('.ad-form').action = 'https://javascript.pages.academy/keksobooking';
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   document.querySelector('.map__filters').style.opacity = 1;
+  setPriceOfBuilding();
   document.querySelector('#type').addEventListener('change', setPriceOfBuilding);
+
   timeFields.addEventListener('change', selectCheckInOutValue);
-  roomNumberSelect.addEventListener('change', validationRoomsSelect);
-  capacityBuildingSelect.addEventListener('change', validationRoomsSelect);
 }
+
+document.querySelector('#type').addEventListener('change', function () {
+  var buildingPrice = document.querySelector('#price');
+
+  if (buildingPrice.validity.rangeUnderflow) {
+    var min = document.querySelector('#price').getAttribute(min);
+    buildingPrice.setCustomValidity('Минимальное значение цены ' + min);
+  }
+
+  if (buildingPrice.validity.rangeOverflow) {
+    var max = document.querySelector('#price').getAttribute(max);
+    buildingPrice.setCustomValidity('Минимальное значение цены ' + max);
+  }
+});
+
+setPageInactiveState();
