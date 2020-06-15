@@ -132,7 +132,7 @@ function generateObjects(quantity) {
   return Objects;
 }
 
-var map = document.querySelector('.map');
+// var map = document.querySelector('.map');
 var templateObject = document.querySelector('#pin').content
                     .querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
@@ -210,15 +210,15 @@ function renderCardOffer(objectOffer) {
     .appendChild(createFeaturesFragment());
   clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment());
 
-  /**
-   * Проверяет наличие контента в поле, при его отсутствии удалет поле
-   * @param {string} field
-   */
-  function isFieldEmpty (field) {
-    if (field === false) {
-      field.remove();
-    }
-  }
+  // /**
+  //  * Проверяет наличие контента в поле, при его отсутствии удалет поле
+  //  * @param {string} field
+  //  */
+  // function isFieldEmpty (field) {
+  //   if (field === false) {
+  //     field.remove();
+  //   }
+  // }
 
   /**
    * Убирает шаблонное значение цены предложения
@@ -375,8 +375,35 @@ function setPriceOfBuilding() {
   buildingPrice.placeholder = MinimumPrices[typeBuilding];
 }
 
-var roomNumber = document.querySelector('#room_number');
-var capacityBuilding = document.querySelector('#capacity');
+// var roomNumberSelect = document.querySelector('#room_number');
+// var capacityBuildingSelect = document.querySelector('#capacity');
+// var RoomsFeatures = {
+//   1: [1],
+//   2: [1, 2],
+//   3: [1, 2, 3],
+//   100: [0]
+// };
+
+// function validationRoomsSelect() {
+//   selectRoomsValue = roomNumberSelect.value;
+//   selectGuestValue = capacityBuildingSelect.value;
+//   var validityMessage = '';
+// }
+
+var timeFields = document.querySelector('.ad-form__element--time');
+
+/**
+* Выполняет выбор поля option соседнего selecta, в зависимости от выбранного
+* ранее
+* @param {Object} evt - объект события
+*/
+function selectCheckInOutValue(evt) {
+  var indexOfSelectedItem = evt.target.selectedIndex;
+  var selectFields = timeFields.querySelectorAll('select');
+  selectFields.forEach(function (selectItem) {
+    selectItem.selectedIndex = indexOfSelectedItem;
+  });
+}
 
 /**
  * Переводит страницу в активное состояние
@@ -388,18 +415,5 @@ function pageActivation() {
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   document.querySelector('.map__filters').style.opacity = 1;
   document.querySelector('#type').addEventListener('change', setPriceOfBuilding);
-
-  var timeFields = document.querySelector('.ad-form__element--time');
-
-  /**
-   * Выполняет выбор поля option соседнего selecta, в зависимости от выбранного
-   *ранее
-   */
-  timeFields.addEventListener('change', function (evt) {
-    var indexOfSelectedItem = evt.target.selectedIndex;
-    var selectFields = timeFields.querySelectorAll('select');
-    selectFields.forEach(function (selectItem) {
-      selectItem.selectedIndex = indexOfSelectedItem;
-    });
-  });
+  timeFields.addEventListener('change', selectCheckInOutValue);
 }
