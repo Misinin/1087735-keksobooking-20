@@ -375,20 +375,41 @@ function setPriceOfBuilding() {
   buildingPrice.placeholder = MinimumPrices[typeBuilding];
 }
 
-// var roomNumberSelect = document.querySelector('#room_number');
-// var capacityBuildingSelect = document.querySelector('#capacity');
-// var RoomsFeatures = {
-//   1: [1],
-//   2: [1, 2],
-//   3: [1, 2, 3],
-//   100: [0]
-// };
+var roomNumberSelect = document.querySelector('#room_number');
+var capacityBuildingSelect = document.querySelector('#capacity');
+var RoomsFeatures = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
+};
 
-// function validationRoomsSelect() {
-//   selectRoomsValue = roomNumberSelect.value;
-//   selectGuestValue = capacityBuildingSelect.value;
-//   var validityMessage = '';
-// }
+function validationRoomsSelect() {
+  var selectRoomsValue = roomNumberSelect.value;
+  var selectGuestValue = capacityBuildingSelect.value;
+  var validityMessage = '';
+
+  if (RoomsFeatures[selectRoomsValue].indexOf(selectGuestValue) === -1) {
+    switch (selectRoomsValue) {
+      case 1:
+        validityMessage = 'Одна комната для одного гостя';
+        break;
+
+      case 2:
+        validityMessage = 'Две комнаты для одного или двух гостей';
+        break;
+
+      case 3:
+        validityMessage = 'Две комнаты для трех, двух или гостя';
+        break;
+
+      case 100:
+        validityMessage = 'Не для гостей';
+        break;
+    }
+  }
+  capacityBuildingSelect.setCustomValidity(validityMessage);
+}
 
 var timeFields = document.querySelector('.ad-form__element--time');
 
@@ -416,4 +437,6 @@ function pageActivation() {
   document.querySelector('.map__filters').style.opacity = 1;
   document.querySelector('#type').addEventListener('change', setPriceOfBuilding);
   timeFields.addEventListener('change', selectCheckInOutValue);
+  roomNumberSelect.addEventListener('change', validationRoomsSelect);
+  capacityBuildingSelect.addEventListener('change', validationRoomsSelect);
 }
