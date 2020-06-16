@@ -305,6 +305,36 @@ function renderCardOffer(objectOffer) {
 
 placeCardAdded.appendChild(renderCardOffer(adObjects[0]));
 
+/*-------------------------------------------------------*/
+
+window.addEventListener('load', setPageToInactive);
+
+var mapBlock = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var formFieldsets = adForm.querySelectorAll('fieldset');
+var filterPins = document.querySelector('.map__filters').querySelectorAll('select');
+
+function setPageToInactive() {
+  mapBlock.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  document.querySelector('.map__pin--main').addEventListener('mousedowm',
+    isKeyPress(evt, 0, setPageActivate)
+  });
+  setBooleanValueAttributeFieldset(formFieldsets, true);
+  setBooleanValueAttributeFieldset(filterPins, true);
+}
+
+/**
+ *Устанавливает логическое значение атрибуту disabled
+ * @param {Object} fildsetArray - массив fildset'ов
+ * @param {boolean} state - логическое состояние атрибута disabled
+ */
+function setBooleanValueAttributeFieldset(fildsetArray, state) {
+  fildsetArray.forEach(function (itemFieldset) {
+    itemFieldset.disabled = state;
+  });
+}
+
 /**
  * Выполняет проверку нажатия клавиши и запускает переданную функцию
  * @param {Object} evt - объект события
@@ -317,141 +347,6 @@ function isKeyPress(evt, key, selectedFunction) {
   }
 }
 
-/**
- *Устанавливает логическое значение атрибуту disabled
- * @param {Object} fildsetArray - массив fildset'ов
- * @param {boolean} state - логическое состояние атрибута disabled
- */
-function setActivateOrDisabledFormElements(fildsetArray, state) {
-  fildsetArray.forEach(function (itemFieldset) {
-    itemFieldset.disabled = state;
-  }
-  );
-}
-
-/**
- * Устанавливает значение поля ввода адреса и устанавливает ему режим - только
- * для чтения
- */
-function setValueAddressField() {
-  document.querySelector('.map__pin--main').addEventListener('mouseup', function (evt) {
-    document.querySelector('#address').value = (evt.pageX - OFFSET_X_FORPIN) + ', ' +
-    (evt.pageX - OFFSET_Y_FORPIN);
-    document.querySelector('#address').readOnly = true;
-  });
-}
-
-var MinimumPrices = {
-  'bungalo': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 10000
-};
-
-/**
- * Устанавливает минимальное значение поля 'Цена за ночь' в зависимости от
- * выбранного типа жилья
- */
-function setPriceOfBuilding() {
-  var buildingPrice = document.querySelector('#price');
-  var typeBuilding = document.querySelector('#type').value;
-
-  buildingPrice.min = MinimumPrices[typeBuilding];
-  buildingPrice.placeholder = MinimumPrices[typeBuilding];
-}
-
-var roomNumberSelect = document.querySelector('#room_number');
-var capacityBuildingSelect = document.querySelector('#capacity');
-var RoomsFeatures = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0]
-};
-
-function validationRoomsSelect() {
-  var selectRoomsValue = roomNumberSelect.value;
-  var selectGuestValue = capacityBuildingSelect.value;
-  var validityMessage = '';
-
-  if (RoomsFeatures[selectRoomsValue].indexOf(selectGuestValue) === -1) {
-    switch (selectRoomsValue) {
-      case 1:
-        validityMessage = 'Одна комната для одного гостя';
-        break;
-
-      case 2:
-        validityMessage = 'Две комнаты для одного или двух гостей';
-        break;
-
-      case 3:
-        validityMessage = 'Две комнаты для трех, двух или гостя';
-        break;
-
-      case 100:
-        validityMessage = 'Не для гостей';
-        break;
-    }
-  }
-  capacityBuildingSelect.setCustomValidity(validityMessage);
-}
-
-var timeFields = document.querySelector('.ad-form__element--time');
-
-/**
-* Выполняет выбор поля option соседнего selecta, в зависимости от выбранного
-* ранее
-* @param {Object} evt - объект события
-*/
-function selectCheckInOutValue(evt) {
-  var indexOfSelectedItem = evt.target.selectedIndex;
-  var selectFields = timeFields.querySelectorAll('select');
-  selectFields.forEach(function (selectItem) {
-    selectItem.selectedIndex = indexOfSelectedItem;
-  });
-}
-
-function setPageInactiveState() {
-  setActivateOrDisabledFormElements((document.querySelector('.ad-form')), true);
-  setActivateOrDisabledFormElements((document.querySelector('.map__filters')), true);
-  document.querySelector('.map__pin--main').tabIndex = '0';
-  document.querySelector('.map__pin--main').addEventListener('keydown', function (evt) {
-    isKeyPress(evt, 'Enter', setPageActivate);
-  });
-  document.querySelector('.map__pin--main').addEventListener('mousedown', function (evt) {
-    if (evt.which === 1) {
-      setPageActivate();
-      setValueAddressField();
-    }
-  });
-}
-
-/**
- * Переводит страницу в активное состояние
- */
 function setPageActivate() {
-  setActivateOrDisabledFormElements((document.querySelector('.ad-form')), false);
-  setActivateOrDisabledFormElements((document.querySelector('.map__filters')), false);
-  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-  document.querySelector('.map__filters').style.opacity = 1;
-  setPriceOfBuilding();
-  document.querySelector('#type').addEventListener('change', setPriceOfBuilding);
-
-  timeFields.addEventListener('change', selectCheckInOutValue);
+  mapBlock.classList.remove('map--faded');
 }
-
-document.querySelector('#type').addEventListener('change', function () {
-  var buildingPrice = document.querySelector('#price');
-
-  if (buildingPrice.validity.rangeUnderflow) {
-    var min = document.querySelector('#price').getAttribute(min);
-    buildingPrice.setCustomValidity('Минимальное значение цены ' + min);
-  }
-
-  if (buildingPrice.validity.rangeOverflow) {
-    var max = document.querySelector('#price').getAttribute(max);
-    buildingPrice.setCustomValidity('Минимальное значение цены ' + max);
-  }
-});
-
-setPageInactiveState();
