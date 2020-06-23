@@ -27,6 +27,8 @@
 
   document.querySelector('.map__pin--main').addEventListener('mousedown', onMouseClickActivateMap);
   document.querySelector('.map__pin--main').addEventListener('keydown', onEnterPressMapActivation);
+  document.querySelector('.map__pin--main').addEventListener('mousedown', FORM.setAddressValue);
+  document.querySelector('.map__pin--main').removeEventListener('mouseup', FORM.setAddressValue);
 
   /**
     * Активирует карту предложений, если по главному пину нажата левая кнопка мыши

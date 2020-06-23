@@ -50,7 +50,7 @@
       if (getPinIdClikedOn(evt) !== null) {
         mapBlock.appendChild(window.card.renderCardOffer(DATA.getRandomObjects[getPinIdClikedOn(evt)]));
         var cardOffer = document.querySelector('.map .popup');
-        cardOffer.querySelector('.popup__close').addEventListener('click', this.closePopup);
+        cardOffer.querySelector('.popup__close').addEventListener('click', closePopup);
       }
     },
     /**

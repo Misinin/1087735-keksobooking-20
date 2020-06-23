@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var MAIN = window.main;
   var adForm = document.querySelector('.ad-form');
   var typeOfRentalHousing = document.querySelector('#type');
   var rentalPricePerNight = document.querySelector('#price');
   var timeFields = document.querySelector('.ad-form__element--time');
   var addressField = document.querySelector('#address');
   var resetFormButton = document.querySelector('.ad-form__reset');
+  var mainPin = document.querySelector('.map__pin--main');
   var MinimumPrice = {
     'bungalo': 0,
     'flat': 1000,
@@ -128,8 +128,8 @@
     * для чтения
     */
     setAddressValue: function () {
-      addressField.value = (Math.round(getCoords(MAIN.mainPin).top + MainPinOffset.X)) +
-      ', ' + (Math.round(getCoords(MAIN.mainPin).left + MainPinOffset.Y));
+      addressField.value = (Math.round(getCoords(mainPin).top + MainPinOffset.X)) +
+      ', ' + (Math.round(getCoords(mainPin).left + MainPinOffset.Y));
     },
     /**
      * Выполняет проверку соответствия выбранного количества комнат и количества гостей
