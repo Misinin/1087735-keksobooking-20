@@ -7,11 +7,11 @@
   var fragment = document.createDocumentFragment();
 
   /**
- * Возвращает разметку метки, добавляя в нее свойства полученного объекта
- * @param {Object} resultingObject - полученный объект
- * @param {number} indexArrayElemt - индекс текущего элемента массива объектов
- * @return {Object}
- */
+  * Возвращает разметку метки, добавляя в нее свойства полученного объекта
+  * @param {Object} resultingObject - полученный объект
+  * @param {number} indexArrayElemt - индекс текущего элемента массива объектов
+  * @return {Object}
+  */
   function createHtmlMarkingObject(resultingObject, indexArrayElemt) {
     var objectElement = templateObject.cloneNode(true);
 
@@ -27,10 +27,10 @@
 
   window.pin = {
     /**
-     * Перебирает массив объектов предложений и отображает их пинами на странице
-     * @param {Object} objects - массив объектов
-     * @return {Object}
-     */
+    * Перебирает массив объектов предложений и отображает их пинами на странице
+    * @param {Object} objects - массив объектов
+    * @return {Object}
+    */
     renderPins: function (objects) {
       objects.forEach(function (pin, index) {
 

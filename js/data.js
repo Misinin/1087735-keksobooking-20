@@ -1,8 +1,8 @@
 'use strict';
 
-var UTIL = window.util;
-
 (function () {
+  var UTIL = window.util;
+
   var Сoordinate = {
     MIN_Y: 130,
     MAX_Y: 630,
@@ -53,16 +53,16 @@ var UTIL = window.util;
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ];
 
-  var WordForms = {
+  var wordForms = {
     room: ['комнатa', 'комнаты', 'комнат'],
     guest: ['гость', 'гостя', 'гостей']
   };
 
   /**
-   * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
-   * @param {number} index -индекс для значения адреса аватарки
-   * @return {Object}
-   */
+  * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
+  * @param {number} index -индекс для значения адреса аватарки
+  * @return {Object}
+  */
   function generateAuthorObject(index) {
     return {
       avatar: 'img/avatars/user0' + (index + 1) + '.png',
@@ -70,9 +70,9 @@ var UTIL = window.util;
   }
 
   /**
- * Возвращает объект offer со случайно полученными значениями свойств
- * @return {Object}
- */
+  * Возвращает объект offer со случайно полученными значениями свойств
+  * @return {Object}
+  */
   function generateRandomOffer() {
     return {
       title: 'Заголовок предложения',
@@ -102,10 +102,10 @@ var UTIL = window.util;
   }
 
   /**
-   * Возвращает объект предложения с рандомными свойствами
-   * @param {number} index - индекс для значения адреса аватарки
-   * @return {Object}
-   */
+  * Возвращает объект предложения с рандомными свойствами
+  * @param {number} index - индекс для значения адреса аватарки
+  * @return {Object}
+  */
   function generateRandomObject(index) {
     return {
       author: generateAuthorObject(index),
@@ -115,10 +115,10 @@ var UTIL = window.util;
   }
 
   /**
-   * Возвращает массив заданной длины, элементы массива объекты предложения
-   * @param {number} quantity - количесвто объектов в массиве
-   * @return {Object}
-   */
+  * Возвращает массив заданной длины, элементы массива объекты предложения
+  * @param {number} quantity - количесвто объектов в массиве
+  * @return {Object}
+  */
   function generateObjects(quantity) {
     var Objects = [];
     for (var i = 0; i < quantity; i++) {
@@ -128,13 +128,13 @@ var UTIL = window.util;
   }
 
   /**
-   * Массив объектов предложений
+  * Массив объектов предложений
   */
   var adObjects = generateObjects(NUMBER_OF_OBJECTS);
 
   window.data = {
     pinOffset: PinOffset,
-    wordForms: WordForms,
+    wordForms: wordForms,
     getRandomObjects: adObjects
   };
 })();

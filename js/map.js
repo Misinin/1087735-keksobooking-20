@@ -6,10 +6,10 @@
   var mapPins = document.querySelector('.map__pins');
 
   /**
-   * Возвращает значение data атрибута id
-   * @param {Object} evt
-   * @return {number}
-   */
+  * Возвращает значение data атрибута id
+  * @param {Object} evt
+  * @return {number}
+  */
   function getPinIdClikedOn(evt) {
     var clickParent = evt.target.closest('.map__pin:not(.map__pin--main)');
     if (clickParent !== null) {
@@ -20,8 +20,8 @@
   }
 
   /**
-    * Закрывает карточку предложения
-    */
+  * Закрывает карточку предложения
+  */
   function closePopup() {
     var currentOffer = document.querySelector('.map .popup');
     if (currentOffer) {
@@ -33,7 +33,7 @@
 
   window.map = {
     /**
-     *Проверяет нажатие клавиши Escape
+    *Проверяет нажатие клавиши Escape
     * @param {Object} evt
     * @param {Object} action - функция которую нужно выполнить
     */
@@ -43,12 +43,12 @@
       }
     },
     /**
-   * Отображает карточку предложения, если клик был не по главному пину
-   * @param {Object} evt
-   */
+    * Отображает карточку предложения, если клик был не по главному пину
+    * @param {Object} evt
+    */
     renderTargetPinCard: function (evt) {
       if (getPinIdClikedOn(evt) !== null) {
-        mapBlock.appendChild(window.card.renderCardOffer(DATA.getRandomObjects[getPinIdClikedOn(evt)]));
+        mapBlock.appendChild(window.card.renderCard(DATA.getRandomObjects[getPinIdClikedOn(evt)]));
         var cardOffer = document.querySelector('.map .popup');
         cardOffer.querySelector('.popup__close').addEventListener('click', closePopup);
       }
@@ -57,7 +57,7 @@
     * Удаляет карточку предложения, если она отображена
     */
     removeCardOffer: function () {
-      this.closePopup();
+      closePopup();
     },
     /**
     * Удаляет пины из разметки
