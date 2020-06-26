@@ -22,6 +22,9 @@
       UTIL.setBooleanValueAttributeFieldset(fieldsets, false);
       window.pin.renderPins(DATA.getRandomObjects);
       document.querySelector('.map__pins').addEventListener('click', MAP.renderTargetPinCard);
+      document.querySelector('.map__pin--main').addEventListener('mousedown', function (evt) {
+        window.move.onMainPinMove(evt);
+      });
     }
   };
 })();

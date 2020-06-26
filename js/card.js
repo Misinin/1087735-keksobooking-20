@@ -77,7 +77,7 @@
     var photoItemTemplate = photosForOffer.querySelector('img');
     var photosFragment = document.createDocumentFragment();
     recivedPhotos.forEach(function (element) {
-      var photoItem = photoItemTemplate.cloneNode(true);
+      var photoItem = photoItemTemplate.cloneNode();
       photoItem.src = element;
       photosFragment.appendChild(photoItem);
     });
