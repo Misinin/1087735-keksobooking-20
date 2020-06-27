@@ -19,9 +19,12 @@
     X: 36,
     Y: 84
   };
+  var mainPinCenter = {
+    x: 31,
+    y: 31
+  };
 
-  document.querySelector('.map__pin--main').addEventListener('mousedown', setAddressValue);
-  document.querySelector('.map__pin--main').removeEventListener('mouseup', setAddressValue);
+  setAddressValue();
   typeOfRentalHousing.addEventListener('change', setPriceOfBuilding);
   timeFields.addEventListener('change', setTheSameValue);
   resetFormButton.addEventListener('click', onResetButtonPress);
@@ -35,18 +38,51 @@
     var box = elem.getBoundingClientRect();
 
     return {
-      top: box.top + pageYOffset,
-      left: box.left + pageXOffset
+      left: box.left + pageXOffset,
+      top: box.top + pageYOffset
     };
   }
 
   /**
-  * Устанавливает значение поля ввода адреса и устанавливает ему режим - только
-  * для чтения
+  * Возвращает координаты пина в поле ввода адреса с заданным значением смещения
+  * @param {Object} pinType - пин
+  * @param {number} pinOffsetX - смещение пина по оси X
+  * @param {number} pinOffsetY - смещение пина по оси Y
+  * @return {string}
   */
+  function getAddressValue(pinType, pinOffsetX, pinOffsetY) {
+    return (Math.round(getCoords(pinType).left + pinOffsetX)) +
+    ', ' + (Math.round(getCoords(pinType).top + pinOffsetY));
+  }
+
+  /**
+   * Устанавливает значение координат острия пина в поле адреса
+   */
+  function setCurrentAddressValue() {
+    addressField.value = getAddressValue(mainPin, MainPinOffset.X, MainPinOffset.Y);
+    document.querySelector('.map__pin--main').removeEventListener('mousedown', setCurrentAddressValue);
+    document.querySelector('.map__pin--main').removeEventListener('keydown', onMainPinEnterPress);
+  }
+
+  /**
+   * Устанавливает значение координат острия пина в поле адреса при нажатии Enter на главном пине
+   * @param {Object} evt
+   */
+  function onMainPinEnterPress(evt) {
+    if (evt.key === 'Enter') {
+      setCurrentAddressValue();
+    }
+  }
+
+  /**
+   * Устанавливает значние центра пина в поля адреса
+   */
   function setAddressValue() {
-    addressField.value = (Math.round(getCoords(mainPin).top + MainPinOffset.X)) +
-    ', ' + (Math.round(getCoords(mainPin).left + MainPinOffset.Y));
+    if (addressField.value === '') {
+      addressField.value = getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
+      document.querySelector('.map__pin--main').addEventListener('mousedown', setCurrentAddressValue);
+      document.querySelector('.map__pin--main').addEventListener('keydown', onMainPinEnterPress);
+    }
   }
 
   /**
@@ -75,4 +111,11 @@
     DEACTIVATION.setPageToInactive();
     adForm.reset();
   }
+
+  window.form = {
+    getAddressValue: function (pinType, pinOffsetX, pinOffsetY) {
+      return (Math.round(getCoords(pinType).left + pinOffsetX)) +
+      ', ' + (Math.round(getCoords(pinType).top + pinOffsetY));
+    }
+  };
 })();
