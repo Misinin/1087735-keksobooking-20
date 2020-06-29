@@ -14,13 +14,14 @@
   */
   function createHtmlMarkingObject(resultingObject, indexArrayElemt) {
     var objectElement = templateObject.cloneNode(true);
+    var img = objectElement.querySelector('img');
 
     objectElement.setAttribute('data-id', indexArrayElemt);
     objectElement.style = 'left: ' +
     (resultingObject.location.x - DATA.pinOffset.X) +
     'px; top: ' + (resultingObject.location.y - DATA.pinOffset.Y) + 'px;';
-    objectElement.querySelector('img').src = resultingObject.author.avatar;
-    objectElement.querySelector('img').alt = resultingObject.offer.title;
+    img.src = (resultingObject.author.avatar === null) ? '' : resultingObject.author.avatar;
+    img.alt = (resultingObject.offer.title === null) ? '' : resultingObject.offer.title;
 
     return objectElement;
   }
