@@ -6,7 +6,7 @@
   var addressField = document.querySelector('#address');
   var pinHandle = document.querySelector('.map__pin--main');
   var MainPinOffset = {
-    X: 40,
+    X: 32.5,
     Y: 82
   };
   var offsetPin = {
@@ -59,7 +59,8 @@
           pinHandle.style.top = offsetPin.MAX_Y - MainPinOffset.Y + 'px';
         }
 
-        addressField.value = window.form.getAddressValue(pinHandle, (MainPinOffset.X - mapPosition.left), MainPinOffset.Y);
+        var currentCoords = window.form.getAddressValue(pinHandle, (MainPinOffset.X - mapPosition.left), MainPinOffset.Y);
+        addressField.value = currentCoords.x + ', ' + currentCoords.y;
       }
 
       function onMouseup(upEvet) {

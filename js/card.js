@@ -9,16 +9,6 @@
   var offerItem = offerTemplate.querySelector('.map__card');
   var clonedOfferItem = offerItem.cloneNode(true);
 
-  // /**
-  //  * Проверяет наличие контента в поле, при его отсутствии удалет поле
-  //  * @param {string} field
-  //  */
-  // function isFieldEmpty (field) {
-  //   if (field === false) {
-  //     field.remove();
-  //   }
-  // }
-
   /**
   * Убирает шаблонное значение цены предложения
   */
@@ -49,23 +39,18 @@
     });
     return featuresFragment;
   }
-  // function setExistingFeatures(recivedFeatures) {
-  //   var featuresList = clonedOfferItem.querySelector('.popup__features');
-  //   var featureItemsTemplate = featuresList.querySelectorAll('li');
-  //   featureItemsTemplate.forEach(function (item, index) {
-  //     var liClassName = item.className;
-  //     console.log(liClassName);
-  //     for (var i = 0; i < recivedFeatures.length; i++) {
-  //       console.log(recivedFeatures[i]);
-  //       if (liClassName.indexOf(recivedFeatures[i]) < 0) {
-  //         featuresList.removeChild(item(index));
-  //       }
-  //     }
-  //   });
-  //   console.log(featureItemsTemplate);
-  //   return featureItemsTemplate;
-  // }
-  // setExistingFeatures(objectOffer.offer.features);
+
+  var photosForOffer = clonedOfferItem.querySelector('.popup__photos');
+  var photoItemTemplate = photosForOffer.querySelector('img');
+  var photoWidth = photoItemTemplate.getAttribute('width');
+  var photoHeigth = photoItemTemplate.getAttribute('heigth');
+
+  /**
+   * Очищает блок изображений в шаблоне
+   */
+  function clearPhotosField() {
+    clonedOfferItem.querySelector('.popup__photos').innerHTML = '';
+  }
 
   /**
   * Созадет фрагмент фотографий здания и возвращает его
@@ -73,12 +58,13 @@
   * @return {Object}
   */
   function createBuildingPhotosFragment(recivedPhotos) {
-    var photosForOffer = clonedOfferItem.querySelector('.popup__photos');
-    var photoItemTemplate = photosForOffer.querySelector('img');
+    clearPhotosField();
     var photosFragment = document.createDocumentFragment();
     recivedPhotos.forEach(function (element) {
       var photoItem = photoItemTemplate.cloneNode();
       photoItem.src = element;
+      photoItem.style.width = photoWidth;
+      photoItem.style.heigth = photoHeigth;
       photosFragment.appendChild(photoItem);
     });
     photoItemTemplate.remove();
@@ -107,9 +93,7 @@
       clearFieldFeatures();
       clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
       clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
-
       mapBlock.addEventListener('keydown', MAP.onEscPressPopupClose);
-
       document.querySelector('.map__pins').removeEventListener('click', MAP.renderTargetPinCard);
 
       return clonedOfferItem;

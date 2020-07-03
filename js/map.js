@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var DATA = window.data;
   var mapBlock = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
 
@@ -48,7 +47,7 @@
     */
     renderTargetPinCard: function (evt) {
       if (getPinIdClikedOn(evt) !== null) {
-        mapBlock.appendChild(window.card.renderCard(DATA.getRandomObjects[getPinIdClikedOn(evt)]));
+        mapBlock.appendChild(window.card.renderCard(window.main.dataPins[getPinIdClikedOn(evt)]));
         var cardOffer = document.querySelector('.map .popup');
         cardOffer.querySelector('.popup__close').addEventListener('click', closePopup);
       }
