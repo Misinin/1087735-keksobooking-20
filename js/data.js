@@ -2,7 +2,6 @@
 
 (function () {
   var UTIL = window.util;
-  var map = document.querySelector('.map');
 
   var Сoordinate = {
     MIN_Y: 130,

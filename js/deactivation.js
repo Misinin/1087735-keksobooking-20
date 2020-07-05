@@ -7,6 +7,7 @@
   var map = document.querySelector('.map');
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
+  var select = document.querySelectorAll('select');
 
   window.deactivation = {
     /**
@@ -18,9 +19,10 @@
       map.classList.add('map--faded');
       form.classList.add('ad-form--disabled');
       UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
-      UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
+      UTIL.setBooleanValueAttributeFieldset(select, true);
       MAP.removeOfferPins();
       MAP.removeCardOffer();
-    },
+      window.form.setStartCoord();
+    }
   };
 })();

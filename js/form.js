@@ -51,15 +51,18 @@
   * @return {string}
   */
   function getAddressValue(pinType, pinOffsetX, pinOffsetY) {
-    return (Math.round(getCoords(pinType).left + pinOffsetX)) +
-    ', ' + (Math.round(getCoords(pinType).top + pinOffsetY));
+    return {
+      x: Math.round(getCoords(pinType).left + pinOffsetX),
+      y: Math.round(getCoords(pinType).top + pinOffsetY)
+    };
   }
 
   /**
    * Устанавливает значение координат острия пина в поле адреса
    */
   function setCurrentAddressValue() {
-    addressField.value = getAddressValue(mainPin, MainPinOffset.X, MainPinOffset.Y);
+    var coords = getAddressValue(mainPin, MainPinOffset.X, MainPinOffset.Y);
+    addressField.value = coords.x + ', ' + coords.y;
     document.querySelector('.map__pin--main').removeEventListener('mousedown', setCurrentAddressValue);
     document.querySelector('.map__pin--main').removeEventListener('keydown', onMainPinEnterPress);
   }
@@ -78,8 +81,9 @@
    * Устанавливает значние центра пина в поля адреса
    */
   function setAddressValue() {
+    var coords = getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
     if (addressField.value === '') {
-      addressField.value = getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
+      addressField.value = coords.x + ', ' + coords.y;
       document.querySelector('.map__pin--main').addEventListener('mousedown', setCurrentAddressValue);
       document.querySelector('.map__pin--main').addEventListener('keydown', onMainPinEnterPress);
     }
@@ -107,15 +111,20 @@
     });
   }
 
+  /**
+   * Действия при нажатии на кнопку сброса формы
+   */
   function onResetButtonPress() {
     DEACTIVATION.setPageToInactive();
     adForm.reset();
   }
 
   window.form = {
-    getAddressValue: function (pinType, pinOffsetX, pinOffsetY) {
-      return (Math.round(getCoords(pinType).left + pinOffsetX)) +
-      ', ' + (Math.round(getCoords(pinType).top + pinOffsetY));
+    getAddressValue: getAddressValue,
+    setStartCoord: function () {
+      var coords = getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
+      mainPin.style.left = coords.x;
+      mainPin.style.top = coords.y;
     }
   };
 })();
