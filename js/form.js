@@ -2,6 +2,7 @@
 
 (function () {
   var DEACTIVATION = window.deactivation;
+  var BACKEND = window.backend;
   var adForm = document.querySelector('.ad-form');
   var typeOfRentalHousing = document.querySelector('#type');
   var timeFields = document.querySelector('.ad-form__element--time');
@@ -119,66 +120,111 @@
     adForm.reset();
   }
 
+  var mainContentBlock = document.querySelector('main');
   var successTemplate = document.querySelector('#success').content;
   var errorTemplate = document.querySelector('#error').content;
   var successMessage = successTemplate.cloneNode(true);
   var errorMessage = errorTemplate.cloneNode(true);
 
   /**
-   * Добавляет в разметку сообщение успешной отправки формы
+   * Обработчик события успешной отправки формы
    */
-  function showSuccessMessage() {
-    document.querySelector('main').appendChild(successMessage);
-    setEventListenersToCloseSuccessMessage();
+  function onSuccessUpLoad() {
+    showMessageAboutUpLoad(successMessage);
     DEACTIVATION.setPageToInactive();
-  }
-
-  function showErrorMessage() {
-    document.querySelector('main').appendChild(errorMessage);
-
-  }
-
-  /**
-   * Обработчик события нажатия Escape по сообщению успешной отправки формы
-   * @param {Object} evt
-   */
-  function onSuccessMessageEscPress(evt) {
-    var mainPartPage = document.querySelector('main');
-    var successPopup = mainPartPage.querySelector('.success');
-    if (evt.key === 'Escape') {
-      mainPartPage.removeChild(successPopup);
-    }
-  }
-
-  /**
-   * Обработчик события клика мыши по сообщению успешной отправки формы
-   */
-  function onSuccessMessageClick() {
-    var mainPartPage = document.querySelector('main');
-    var successPopup = mainPartPage.querySelector('.success');
-    mainPartPage.removeChild(successPopup);
-  }
-
-  /**
-   * Добавляет обработчики событий на сообщение успешно
-   */
-  function setEventListenersToCloseSuccessMessage() {
+    adForm.reset();
     document.addEventListener('click', onSuccessMessageClick);
     document.addEventListener('keydown', onSuccessMessageEscPress);
   }
 
   /**
-  * Удаляет обработчики событий на сообщение успешно
-  */
-  function deleteEventListenerToSuccessMessage() {
-    document.removeEventListener('click', onSuccessMessageClick);
-    document.removeEventListener('keydown', onSuccessMessageEscPress);
+   * Обработчик события ошибки при отправке формы
+   */
+  function onErrorUpLoad() {
+    showMessageAboutUpLoad(errorMessage);
+    var errorButton = document.querySelector('.error__button');
+    document.addEventListener('click', onErrorMessageClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
+    if (errorButton) {
+      errorButton.addEventListener('click', onErrorButtonClick);
+    }
   }
 
-  showSuccessMessage();
+  /**
+   * Убирает блок сообщения о статусе отправки формы из разметки
+   * @param {Object} messageBlock - блок статуса отправки формы
+   */
+  function eventOnSuccessMessagePopupHandler(messageBlock) {
+    var containerMessage = messageBlock.parentNode;
+    containerMessage.removeChild(messageBlock);
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
+    mainPin.addEventListener('mousedown', window.main.onMainPinMouseDownHandler);
+    mainPin.addEventListener('keydown', window.main.onEnterPressMapActivation);
+  }
+
+  /**
+   * Обработчик клика по сообщению об успешной отправке
+   */
+  function onSuccessMessageClick() {
+    var successBlock = document.querySelector('.success');
+    eventOnSuccessMessagePopupHandler(successBlock);
+    document.addEventListener('click', onSuccessMessageClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+  }
+
+  /**
+   * Обработчик нажатия клавиши Escape по сообщению об успешной отправке
+   * @param {Object} evt
+   */
+  function onSuccessMessageEscPress(evt) {
+    if (evt.key === 'Escape') {
+      var successBlock = document.querySelector('.success');
+      eventOnSuccessMessagePopupHandler(successBlock);
+    }
+  }
+
+  function eventOnErrorMessagePopupHandler(messageBlock) {
+    var containerMessage = messageBlock.parentNode;
+    var errorButton = document.querySelector('.error__button');
+    containerMessage.removeChild(messageBlock);
+    document.removeEventListener('click', onErrorMessageClick);
+    document.removeEventListener('keydown', onErrorMessageEscPress);
+    errorButton.removeEventListener('click', onErrorButtonClick);
+  }
+
+  function onErrorMessageClick() {
+    var errorBlock = document.querySelector('.error');
+    eventOnErrorMessagePopupHandler(errorBlock);
+  }
+
+  function onErrorMessageEscPress(evt) {
+    if (evt.key === 'Escape') {
+      var errorBlock = document.querySelector('.error');
+      eventOnErrorMessagePopupHandler(errorBlock);
+    }
+  }
+
+  function onErrorButtonClick(evt) {
+    evt.preventDefault();
+    var errorBlock = document.querySelector('.error');
+    eventOnErrorMessagePopupHandler(errorBlock);
+  }
+
+  /**
+   * Выводит сообщение о состоянии отправки формы на сервер
+   * @param {Object} typeMessage - отображаемое сообщение
+   */
+  function showMessageAboutUpLoad(typeMessage) {
+    mainContentBlock.appendChild(typeMessage);
+  }
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    BACKEND.upLoad(new FormData(adForm), onSuccessUpLoad, onErrorUpLoad);
+  });
 
   window.form = {
     getAddressValue: getAddressValue,
-    deleteMessageListener: deleteEventListenerToSuccessMessage
   };
 })();

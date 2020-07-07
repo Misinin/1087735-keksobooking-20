@@ -64,6 +64,7 @@
       var xhr = createXHR(successAction, errorAction);
       xhr.open('POST', Url.POST);
       xhr.send(data);
-    }
+    },
+    statusCodes: StatusCodes
   };
 })();

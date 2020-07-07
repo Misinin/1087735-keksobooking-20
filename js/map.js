@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var CARD = window.card;
   var mapBlock = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
 
@@ -18,32 +19,38 @@
     }
   }
 
-  window.map = {
-    /**
-    * Отображает карточку предложения, если клик был не по главному пину
-    * @param {Object} evt
-    */
-    onOfferPinCard: function (evt) {
-      if (getPinIdClikedOn(evt) !== null) {
-        mapBlock.appendChild(window.card.render(window.main.dataPins[getPinIdClikedOn(evt)]));
-        var cardOffer = document.querySelector('.map .popup');
-        cardOffer.querySelector('.popup__close').addEventListener('click', window.card.close);
-      }
-    },
-    /**
-    * Удаляет карточку предложения, если она отображена
-    */
-    removeCardOffer: function () {
-      window.card.close();
-    },
-    /**
-    * Удаляет пины из разметки
-    */
-    removeOfferPins: function () {
-      var offers = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-      offers.forEach(function (offer, index) {
-        mapPins.removeChild(offers[index]);
-      });
+  /**
+  * Отображает карточку предложения, если клик был не по главному пину
+  * @param {Object} evt
+  */
+  function onOfferPinCard(evt) {
+    if (getPinIdClikedOn(evt) !== null) {
+      mapBlock.appendChild(window.card.render(window.main.dataPins[getPinIdClikedOn(evt)]));
+      var cardOffer = document.querySelector('.map .popup');
+      cardOffer.querySelector('.popup__close').addEventListener('click', removeCardOffer);
     }
+  }
+
+  /**
+  * Удаляет карточку предложения, если она отображена
+  */
+  function removeCardOffer() {
+    CARD.close();
+  }
+
+  /**
+  * Удаляет пины из разметки
+  */
+  function removeOfferPins() {
+    var offers = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+    offers.forEach(function (offer, index) {
+      mapPins.removeChild(offers[index]);
+    });
+  }
+
+  window.map = {
+    onOfferPinCard: onOfferPinCard,
+    removeCardOffer: removeCardOffer,
+    removeOfferPins: removeOfferPins
   };
 })();

@@ -80,7 +80,7 @@
       mapBlock.removeChild(currentOffer);
     }
     mapBlock.removeEventListener('keydown', window.map.onEscPressPopupClose);
-    document.querySelector('.map__pins').addEventListener('click', window.map.renderTargetPinCard);
+    document.querySelector('.map__pins').addEventListener('click', MAP.onOfferPinCard);
   }
 
   /**
@@ -126,13 +126,14 @@
     clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
     clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
     mapBlock.addEventListener('keydown', onEscPressCardClose);
-    document.querySelector('.map__pins').removeEventListener('click', MAP.renderTargetPinCard);
+    document.querySelector('.map__pins').removeEventListener('click', MAP.onOfferPinCard);
 
     return clonedOfferItem;
   }
 
   window.card = {
     render: renderCard,
-    remove: removeCard
+    remove: removeCard,
+    close: closeCard
   };
 })();

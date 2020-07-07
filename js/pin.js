@@ -26,6 +26,10 @@
     return objectElement;
   }
 
+  // function setPinStartCoords() {
+
+  // }
+
   window.pin = {
     /**
     * Перебирает массив объектов предложений и отображает их пинами на странице

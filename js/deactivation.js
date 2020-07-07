@@ -5,7 +5,6 @@
   var MAIN = window.main;
   var CARD = window.card;
   var MAP = window.map;
-  var FORM = window.form;
   var map = document.querySelector('.map');
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
@@ -24,8 +23,6 @@
       UTIL.setBooleanValueAttributeFieldset(select, true);
       MAP.removeOfferPins();
       CARD.remove();
-      FORM.deleteMessageListener();
-      // window.form.setStartCoord();
     }
   };
 })();

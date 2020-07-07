@@ -84,7 +84,7 @@
         break;
 
       case 3:
-        if (selectGuestValue === 0) {
+        if (selectGuestValue === '0') {
           capacityBuildingSelect.setCustomValidity('В три комнаты можно поселить от 1го до 3х гостей.');
         }
         break;
