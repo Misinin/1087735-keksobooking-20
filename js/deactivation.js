@@ -3,7 +3,9 @@
 (function () {
   var UTIL = window.util;
   var MAIN = window.main;
+  var CARD = window.card;
   var MAP = window.map;
+  var FORM = window.form;
   var map = document.querySelector('.map');
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
@@ -21,8 +23,9 @@
       UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
       UTIL.setBooleanValueAttributeFieldset(select, true);
       MAP.removeOfferPins();
-      MAP.removeCardOffer();
-      window.form.setStartCoord();
+      CARD.remove();
+      FORM.deleteMessageListener();
+      // window.form.setStartCoord();
     }
   };
 })();

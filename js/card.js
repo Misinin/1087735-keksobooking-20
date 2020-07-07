@@ -71,32 +71,68 @@
     return photosFragment;
   }
 
-  window.card = {
+  /**
+  * Закрывает карточку предложения
+  */
+  function closeCard() {
+    var currentOffer = document.querySelector('.map .popup');
+    if (currentOffer) {
+      mapBlock.removeChild(currentOffer);
+    }
+    mapBlock.removeEventListener('keydown', window.map.onEscPressPopupClose);
+    document.querySelector('.map__pins').addEventListener('click', window.map.renderTargetPinCard);
+  }
+
+  /**
+  * Удаляет карту предложения из разметки
+  */
+  function removeCard() {
+    var currentOffer = document.querySelector('.map .popup');
+    if (currentOffer) {
+      mapBlock.removeChild(currentOffer);
+    }
+  }
+
+  /**
+  *Проверяет нажатие клавиши Escape
+  * @param {Object} evt
+  * @param {Object} action - функция которую нужно выполнить
+  */
+  function onEscPressCardClose(evt) {
+    if (evt.key === 'Escape') {
+      closeCard();
+    }
+  }
+
   /**
   * Наполняет контентом шаблон карточки предложения
   * @param {Object} objectOffer
   * @return {Object}
   */
-    renderCard: function (objectOffer) {
-      clonedOfferItem.querySelector('.popup__title').textContent = objectOffer.offer.title;
-      clonedOfferItem.querySelector('.popup__text--address').textContent = objectOffer.offer.address;
-      clonedOfferItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + objectOffer.offer.checkin +
-      ' выезд до ' + objectOffer.offer.checkout;
-      clonedOfferItem.querySelector('.popup__description').textContent = objectOffer.offer.description;
-      clonedOfferItem.querySelector('.popup__avatar').src = objectOffer.author.avatar;
-      clearFieldOfferPrice();
-      clonedOfferItem.querySelector('.popup__text--price').insertAdjacentText('afterbegin', objectOffer.offer.price + '₽');
-      var rooms = objectOffer.offer.rooms;
-      var guests = objectOffer.offer.guests;
-      clonedOfferItem.querySelector('.popup__text--capacity').textContent = rooms + ' ' + UTIL.getCorrectWord(rooms, DATA.wordForms.room) +
-      ' для ' + guests + ' ' + UTIL.getCorrectWord(guests, DATA.wordForms.guest);
-      clearFieldFeatures();
-      clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
-      clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
-      mapBlock.addEventListener('keydown', MAP.onEscPressPopupClose);
-      document.querySelector('.map__pins').removeEventListener('click', MAP.renderTargetPinCard);
+  function renderCard(objectOffer) {
+    clonedOfferItem.querySelector('.popup__title').textContent = objectOffer.offer.title;
+    clonedOfferItem.querySelector('.popup__text--address').textContent = objectOffer.offer.address;
+    clonedOfferItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + objectOffer.offer.checkin +
+    ' выезд до ' + objectOffer.offer.checkout;
+    clonedOfferItem.querySelector('.popup__description').textContent = objectOffer.offer.description;
+    clonedOfferItem.querySelector('.popup__avatar').src = objectOffer.author.avatar;
+    clearFieldOfferPrice();
+    clonedOfferItem.querySelector('.popup__text--price').insertAdjacentText('afterbegin', objectOffer.offer.price + '₽');
+    var rooms = objectOffer.offer.rooms;
+    var guests = objectOffer.offer.guests;
+    clonedOfferItem.querySelector('.popup__text--capacity').textContent = rooms + ' ' + UTIL.getCorrectWord(rooms, DATA.wordForms.room) +
+    ' для ' + guests + ' ' + UTIL.getCorrectWord(guests, DATA.wordForms.guest);
+    clearFieldFeatures();
+    clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
+    clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
+    mapBlock.addEventListener('keydown', onEscPressCardClose);
+    document.querySelector('.map__pins').removeEventListener('click', MAP.renderTargetPinCard);
 
-      return clonedOfferItem;
-    }
+    return clonedOfferItem;
+  }
+
+  window.card = {
+    render: renderCard,
+    remove: removeCard
   };
 })();

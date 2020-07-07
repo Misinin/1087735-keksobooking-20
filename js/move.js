@@ -68,6 +68,7 @@
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseup);
+        // document.addEventListener('mousedown', window.move.onMainPinMove);
       }
 
       document.addEventListener('mouseup', onMouseup);

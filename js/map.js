@@ -18,45 +18,23 @@
     }
   }
 
-  /**
-  * Закрывает карточку предложения
-  */
-  function closePopup() {
-    var currentOffer = document.querySelector('.map .popup');
-    if (currentOffer) {
-      mapBlock.removeChild(currentOffer);
-    }
-    mapBlock.removeEventListener('keydown', window.map.onEscPressPopupClose);
-    document.querySelector('.map__pins').addEventListener('click', window.map.renderTargetPinCard);
-  }
-
   window.map = {
-    /**
-    *Проверяет нажатие клавиши Escape
-    * @param {Object} evt
-    * @param {Object} action - функция которую нужно выполнить
-    */
-    onEscPressPopupClose: function (evt) {
-      if (evt.key === 'Escape') {
-        closePopup();
-      }
-    },
     /**
     * Отображает карточку предложения, если клик был не по главному пину
     * @param {Object} evt
     */
-    renderTargetPinCard: function (evt) {
+    onOfferPinCard: function (evt) {
       if (getPinIdClikedOn(evt) !== null) {
-        mapBlock.appendChild(window.card.renderCard(window.main.dataPins[getPinIdClikedOn(evt)]));
+        mapBlock.appendChild(window.card.render(window.main.dataPins[getPinIdClikedOn(evt)]));
         var cardOffer = document.querySelector('.map .popup');
-        cardOffer.querySelector('.popup__close').addEventListener('click', closePopup);
+        cardOffer.querySelector('.popup__close').addEventListener('click', window.card.close);
       }
     },
     /**
     * Удаляет карточку предложения, если она отображена
     */
     removeCardOffer: function () {
-      closePopup();
+      window.card.close();
     },
     /**
     * Удаляет пины из разметки

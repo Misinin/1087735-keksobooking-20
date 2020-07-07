@@ -52,7 +52,7 @@
       var xhr = createXHR(successAction, errorAction);
       xhr.open('GET', Url.GET);
       xhr.send();
-      document.querySelector('.map__pin--main').removeEventListener('mouseover', window.main.downloadData);
+
     },
     /**
      * Выполняет отправку данных на сервер

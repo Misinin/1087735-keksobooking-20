@@ -58,8 +58,8 @@
   }
 
   /**
-   * Устанавливает значение координат острия пина в поле адреса
-   */
+  * Устанавливает значение координат острия пина в поле адреса
+  */
   function setCurrentAddressValue() {
     var coords = getAddressValue(mainPin, MainPinOffset.X, MainPinOffset.Y);
     addressField.value = coords.x + ', ' + coords.y;
@@ -119,12 +119,66 @@
     adForm.reset();
   }
 
+  var successTemplate = document.querySelector('#success').content;
+  var errorTemplate = document.querySelector('#error').content;
+  var successMessage = successTemplate.cloneNode(true);
+  var errorMessage = errorTemplate.cloneNode(true);
+
+  /**
+   * Добавляет в разметку сообщение успешной отправки формы
+   */
+  function showSuccessMessage() {
+    document.querySelector('main').appendChild(successMessage);
+    setEventListenersToCloseSuccessMessage();
+    DEACTIVATION.setPageToInactive();
+  }
+
+  function showErrorMessage() {
+    document.querySelector('main').appendChild(errorMessage);
+
+  }
+
+  /**
+   * Обработчик события нажатия Escape по сообщению успешной отправки формы
+   * @param {Object} evt
+   */
+  function onSuccessMessageEscPress(evt) {
+    var mainPartPage = document.querySelector('main');
+    var successPopup = mainPartPage.querySelector('.success');
+    if (evt.key === 'Escape') {
+      mainPartPage.removeChild(successPopup);
+    }
+  }
+
+  /**
+   * Обработчик события клика мыши по сообщению успешной отправки формы
+   */
+  function onSuccessMessageClick() {
+    var mainPartPage = document.querySelector('main');
+    var successPopup = mainPartPage.querySelector('.success');
+    mainPartPage.removeChild(successPopup);
+  }
+
+  /**
+   * Добавляет обработчики событий на сообщение успешно
+   */
+  function setEventListenersToCloseSuccessMessage() {
+    document.addEventListener('click', onSuccessMessageClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+  }
+
+  /**
+  * Удаляет обработчики событий на сообщение успешно
+  */
+  function deleteEventListenerToSuccessMessage() {
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
+  }
+
+  showSuccessMessage();
+
   window.form = {
     getAddressValue: getAddressValue,
-    setStartCoord: function () {
-      var coords = getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
-      mainPin.style.left = coords.x;
-      mainPin.style.top = coords.y;
-    }
+    deleteMessageListener: deleteEventListenerToSuccessMessage
   };
 })();
