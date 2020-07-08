@@ -46,8 +46,8 @@
   var photoHeigth = photoItemTemplate.getAttribute('heigth');
 
   /**
-   * Очищает блок изображений в шаблоне
-   */
+  * Очищает блок изображений в шаблоне
+  */
   function clearPhotosField() {
     clonedOfferItem.querySelector('.popup__photos').innerHTML = '';
   }
@@ -94,7 +94,7 @@
   }
 
   /**
-  *Проверяет нажатие клавиши Escape
+  * Проверяет нажатие клавиши Escape
   * @param {Object} evt
   * @param {Object} action - функция которую нужно выполнить
   */
@@ -126,7 +126,7 @@
     clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
     clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
     mapBlock.addEventListener('keydown', onEscPressCardClose);
-    document.querySelector('.map__pins').removeEventListener('click', MAP.onOfferPinCard);
+    // document.querySelector('.map__pins').removeEventListener('click', MAP.onOfferPinCard);
 
     return clonedOfferItem;
   }

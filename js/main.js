@@ -2,6 +2,8 @@
 
 (function () {
   var UTIL = window.util;
+  var ACTIVATION = window.activation;
+  var MOVE = window.move;
   var mainPin = document.querySelector('.map__pin--main');
   var fieldsets = document.querySelectorAll('fieldset');
   var select = document.querySelectorAll('select');
@@ -10,11 +12,11 @@
   UTIL.setBooleanValueAttributeFieldset(select, true);
 
   window.backend.load(responseSuccess, function () {
-    // console.error("Ошибка");
+    // console.error("Данные с сервера не получены");
   });
 
   /**
-  * Возвращает данные полученные с сервера
+  * Присваивает глобальной переменной данные полученные с сервера
   * @param {Object} xhr
   */
   function responseSuccess(xhr) {
@@ -27,28 +29,40 @@
   */
   function onMainPinClick(evt) {
     if (evt.which === 1) {
-      window.activation.setPageActivate();
+      ACTIVATION.page();
     }
   }
 
-  window.main = {
-    /**
-    * Выполняет проверку нажатия клавиши и запускает переданную функцию
-    * @param {Object} evt - объект события
-    * @param {string} key - проверяемая клавиша
-    * @param {Object} selectedFunction - вызываемая функция
-    */
-    onEnterPressMapActivation: function (evt) {
-      if (evt.key === 'Enter') {
-        window.activation.setPageActivate();
-      }
-    },
-    onMainPinMouseDownHandler: function (evt) {
-      onMainPinClick(evt);
-      window.move.onMainPinMove(evt);
+  /**
+  * Выполняет проверку нажатия клавиши и запускает переданную функцию
+  * @param {Object} evt - объект события
+  * @param {string} key - проверяемая клавиша
+  * @param {Object} selectedFunction - вызываемая функция
+  */
+  function onEnterPressMapActivation(evt) {
+    if (evt.key === 'Enter') {
+      ACTIVATION.page();
+      mainPin.removeEventListener('mousedown', onMainPinMouseDownHandler);
+      mainPin.removeEventListener('keydown', onEnterPressMapActivation);
     }
-  };
+  }
 
-  mainPin.addEventListener('mousedown', window.main.onMainPinMouseDownHandler);
-  mainPin.addEventListener('keydown', window.main.onEnterPressMapActivation);
+  /**
+  * Обработчик события клика по главному пину
+  * @param {Object} evt
+  */
+  function onMainPinMouseDownHandler(evt) {
+    onMainPinClick(evt);
+    mainPin.removeEventListener('mousedown', onMainPinMouseDownHandler);
+    mainPin.removeEventListener('keydown', onEnterPressMapActivation);
+    MOVE.pin(evt);
+  }
+
+  mainPin.addEventListener('mousedown', onMainPinMouseDownHandler);
+  mainPin.addEventListener('keydown', onEnterPressMapActivation);
+
+  window.main = {
+    onEnterPageActive: onEnterPressMapActivation,
+    onMouseClickPageActive: onMainPinMouseDownHandler
+  };
 })();

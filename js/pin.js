@@ -26,23 +26,21 @@
     return objectElement;
   }
 
-  // function setPinStartCoords() {
+  /**
+  * Перебирает массив объектов предложений и отображает их пинами на странице
+  * @param {Object} objects - массив объектов
+  * @return {Object}
+  */
+  function renderPins(objects) {
+    objects.forEach(function (pin, index) {
 
-  // }
+      fragment.appendChild(createHtmlMarkingObject(pin, index));
+    });
+
+    return mapPins.appendChild(fragment);
+  }
 
   window.pin = {
-    /**
-    * Перебирает массив объектов предложений и отображает их пинами на странице
-    * @param {Object} objects - массив объектов
-    * @return {Object}
-    */
-    renderPins: function (objects) {
-      objects.forEach(function (pin, index) {
-
-        fragment.appendChild(createHtmlMarkingObject(pin, index));
-      });
-
-      return mapPins.appendChild(fragment);
-    }
+    render: renderPins
   };
 })();

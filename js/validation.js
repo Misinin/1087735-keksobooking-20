@@ -63,8 +63,8 @@
   }
 
   /**
-    * Выполняет проверку соответствия выбранного количества комнат и количества гостей
-    */
+  * Выполняет проверку соответствия выбранного количества комнат и количества гостей
+  */
   function validationRoomsSelect() {
     var selectRoomsValue = roomNumberSelect.value;
     var selectGuestValue = capacityBuildingSelect.value;
@@ -102,4 +102,12 @@
   rentalPricePerNight.addEventListener('invalid', priceFieldValidation);
   roomNumberSelect.addEventListener('change', validationRoomsSelect);
   capacityBuildingSelect.addEventListener('change', validationRoomsSelect);
+
+  window.validation = {
+    headline: validateHeadline(),
+    headlineInput: validateHeadlineInput(),
+    price: priceFieldValidation(),
+    rooms: validationRoomsSelect(),
+    guests: validationRoomsSelect()
+  };
 })();
