@@ -1,51 +1,68 @@
 'use strict';
 
 (function () {
+  var UTIL = window.util;
+  var ACTIVATION = window.activation;
+  var MOVE = window.move;
   var mainPin = document.querySelector('.map__pin--main');
+  var fieldsets = document.querySelectorAll('fieldset');
+  var select = document.querySelectorAll('select');
+
+  UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
+  UTIL.setBooleanValueAttributeFieldset(select, true);
+
+  window.backend.load(responseSuccess, function () {
+    // console.error("Данные с сервера не получены");
+  });
 
   /**
-   * Возвращает данные полученные с сервера
-   * @param {Object} xhr
-   */
+  * Присваивает глобальной переменной данные полученные с сервера
+  * @param {Object} xhr
+  */
   function responseSuccess(xhr) {
     window.main.dataPins = xhr.response;
-    document.querySelector('.map__pin--main').removeEventListener('focus', window.main.downloadData);
   }
 
-  window.main = {
-    /**
-    * Активирует карту предложений, если по главному пину нажата левая кнопка мыши
-    * @param {Object} evt
-    */
-    onMouseClickActivateMap: function (evt) {
-      if (evt.which === 1) {
-        window.activation.setPageActivate();
-      }
-    },
-
-    /**
-     * Обработчик события получения данных с сервера
-     */
-    downloadData: function () {
-      window.backend.load(responseSuccess, function () {
-        // console.error("Ошибка");
-      });
-    },
-    /**
-    * Выполняет проверку нажатия клавиши и запускает переданную функцию
-    * @param {Object} evt - объект события
-    * @param {string} key - проверяемая клавиша
-    * @param {Object} selectedFunction - вызываемая функция
-    */
-    onEnterPressMapActivation: function (evt) {
-      if (evt.key === 'Enter') {
-        window.activation.setPageActivate();
-      }
+  /**
+  * Активирует карту предложений, если по главному пину нажата левая кнопка мыши
+  * @param {Object} evt
+  */
+  function onMainPinClick(evt) {
+    if (evt.which === 1) {
+      ACTIVATION.page();
     }
-  };
+  }
 
-  mainPin.addEventListener('keydown', window.main.onEnterPressMapActivation);
-  mainPin.addEventListener('mouseover', window.main.downloadData);
-  mainPin.addEventListener('focus', window.main.downloadData);
-  mainPin.addEventListener('mouseup', window.main.onMouseClickActivateMap);
+  /**
+  * Выполняет проверку нажатия клавиши и запускает переданную функцию
+  * @param {Object} evt - объект события
+  * @param {string} key - проверяемая клавиша
+  * @param {Object} selectedFunction - вызываемая функция
+  */
+  function onEnterPressMapActivation(evt) {
+    if (evt.key === 'Enter') {
+      ACTIVATION.page();
+      mainPin.removeEventListener('mousedown', onMainPinMouseDownHandler);
+      mainPin.removeEventListener('keydown', onEnterPressMapActivation);
+    }
+  }
+
+  /**
+  * Обработчик события клика по главному пину
+  * @param {Object} evt
+  */
+  function onMainPinMouseDownHandler(evt) {
+    onMainPinClick(evt);
+    mainPin.removeEventListener('mousedown', onMainPinMouseDownHandler);
+    mainPin.removeEventListener('keydown', onEnterPressMapActivation);
+    MOVE.pin(evt);
+  }
+
+  mainPin.addEventListener('mousedown', onMainPinMouseDownHandler);
+  mainPin.addEventListener('keydown', onEnterPressMapActivation);
+
+  window.main = {
+    onEnterPageActive: onEnterPressMapActivation,
+    onMouseClickPageActive: onMainPinMouseDownHandler
+  };
 })();

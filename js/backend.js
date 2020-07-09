@@ -42,28 +42,32 @@
     return xhr;
   }
 
+  /**
+  * Выполняет отправку запроса на сервер
+  * @param {Object} successAction - действия при получении данных с сервера
+  * @param {Object} errorAction - действия при получении ошибки с сервера
+  */
+  function download(successAction, errorAction) {
+    var xhr = createXHR(successAction, errorAction);
+    xhr.open('GET', Url.GET);
+    xhr.send();
+  }
+
+  /**
+  * Выполняет отправку данных на сервер
+  * @param {Object} data - данные для отправки
+  * @param {Object} successAction - действия при получении данных с сервера
+  * @param {Object} errorAction - действия при получении ошибки с сервера
+  */
+  function upLoad(data, successAction, errorAction) {
+    var xhr = createXHR(successAction, errorAction);
+    xhr.open('POST', Url.POST);
+    xhr.send(data);
+  }
+
   window.backend = {
-    /**
-     * Выполняет отправку запроса на сервер
-     * @param {Object} successAction - действия при получении данных с сервера
-     * @param {Object} errorAction - действия при получении ошибки с сервера
-     */
-    load: function (successAction, errorAction) {
-      var xhr = createXHR(successAction, errorAction);
-      xhr.open('GET', Url.GET);
-      xhr.send();
-      document.querySelector('.map__pin--main').removeEventListener('mouseover', window.main.downloadData);
-    },
-    /**
-     * Выполняет отправку данных на сервер
-     * @param {Object} data - данные для отправки
-     * @param {Object} successAction - действия при получении данных с сервера
-     * @param {Object} errorAction - действия при получении ошибки с сервера
-     */
-    upLoad: function (data, successAction, errorAction) {
-      var xhr = createXHR(successAction, errorAction);
-      xhr.open('POST', Url.POST);
-      xhr.send(data);
-    }
+    load: download,
+    upLoad: upLoad,
+    statusCodes: StatusCodes
   };
 })();
