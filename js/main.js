@@ -21,6 +21,7 @@
   */
   function responseSuccess(xhr) {
     window.main.dataPins = xhr.response;
+    UTIL.setBooleanValueAttributeFieldset(select, false);
   }
 
   /**

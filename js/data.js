@@ -30,7 +30,7 @@
     Y: 70
   };
 
-  var NUMBER_OF_OBJECTS = 8;
+  var NUMBER_OF_OBJECTS = 5;
 
   var Type = {
     PALACE: 'Дворец',
