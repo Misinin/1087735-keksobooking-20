@@ -27,10 +27,10 @@
   getMainPinStartCoords();
 
   /**
-  * Возвращает координаты элемента относительно документа
-  * @param {Object} elem - вычисляемый элемент
-  * @return {Object}
-  */
+   * Возвращает координаты элемента относительно документа
+   * @param {Object} elem - вычисляемый элемент
+   * @return {Object}
+   */
   function getCoords(elem) {
     var box = elem.getBoundingClientRect();
 
@@ -41,12 +41,12 @@
   }
 
   /**
-  * Возвращает координаты пина с заданным значением смещения
-  * @param {Object} pinType - пин
-  * @param {number} pinOffsetX - смещение пина по оси X
-  * @param {number} pinOffsetY - смещение пина по оси Y
-  * @return {string}
-  */
+   * Возвращает координаты пина с заданным значением смещения
+   * @param {Object} pinType - пин
+   * @param {number} pinOffsetX - смещение пина по оси X
+   * @param {number} pinOffsetY - смещение пина по оси Y
+   * @return {string}
+   */
   function getAddressValue(pinType, pinOffsetX, pinOffsetY) {
     return {
       x: Math.round(getCoords(pinType).left + pinOffsetX),
@@ -55,9 +55,9 @@
   }
 
   /**
-  * Обработчик перемещения пина
-  * @param {Object} evt
-  */
+   * Обработчик перемещения пина
+   * @param {Object} evt
+   */
   function onMainPinMove(evt) {
     evt.preventDefault();
 

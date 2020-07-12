@@ -32,8 +32,8 @@
   resetFormButton.addEventListener('click', onResetButtonPress);
 
   /**
-  * Устанавливает значение координат острия пина в поле адреса
-  */
+   * Устанавливает значение координат острия пина в поле адреса
+   */
   function setCurrentAddressValue() {
     var coords = MOVE.getAddressValue(mainPin, MainPinOffset.X, MainPinOffset.Y);
     addressField.value = coords.x + ', ' + coords.y;
@@ -42,9 +42,9 @@
   }
 
   /**
-  * Устанавливает значение координат острия пина в поле адреса при нажатии Enter на главном пине
-  * @param {Object} evt
-  */
+   * Устанавливает значение координат острия пина в поле адреса при нажатии Enter на главном пине
+   * @param {Object} evt
+   */
   function onMainPinEnterPress(evt) {
     if (evt.key === 'Enter') {
       setCurrentAddressValue();
@@ -52,8 +52,8 @@
   }
 
   /**
-  * Устанавливает значние центра пина в поля адреса
-  */
+   * Устанавливает значние центра пина в поля адреса
+   */
   function setAddressValue() {
     var coords = MOVE.getAddressValue(mainPin, mainPinCenter.x, mainPinCenter.y);
     if (addressField.value === '') {
@@ -64,9 +64,9 @@
   }
 
   /**
-  * Устанавливает минимальное значение поля 'Цена за ночь' в зависимости от
-  * выбранного типа жилья
-  */
+   * Устанавливает минимальное значение поля 'Цена за ночь' в зависимости от
+   * выбранного типа жилья
+   */
   function setPriceOfBuilding() {
     var typeHousingValue = typeOfRentalHousing.value;
     rentalPricePerNight.min = MinimumPrice[typeHousingValue];
@@ -74,9 +74,9 @@
   }
 
   /**
-  * Устанавливает полученное значение соседнему полю
-  * @param {Object} evt - объект события
-  */
+   * Устанавливает полученное значение соседнему полю
+   * @param {Object} evt - объект события
+   */
   function setTheSameValue(evt) {
     var indexOfSelectedItem = evt.target.selectedIndex;
     var selectFields = timeFields.querySelectorAll('select');
@@ -86,8 +86,8 @@
   }
 
   /**
-  * Действия при нажатии на кнопку сброса формы
-  */
+   * Действия при нажатии на кнопку сброса формы
+   */
   function onResetButtonPress() {
     DEACTIVATION.page();
     adForm.reset();
@@ -98,8 +98,8 @@
   var errorTemplate = document.querySelector('#error').content;
 
   /**
-  * Обработчик события успешной отправки формы
-  */
+   * Обработчик события успешной отправки формы
+   */
   function onSuccessUpLoad() {
     var successMessage = successTemplate.cloneNode(true);
     showMessageAboutUpLoad(successMessage);
@@ -110,8 +110,8 @@
   }
 
   /**
-  * Обработчик события ошибки при отправке формы
-  */
+   * Обработчик события ошибки при отправке формы
+   */
   function onErrorUpLoad() {
     var errorMessage = errorTemplate.cloneNode(true);
     showMessageAboutUpLoad(errorMessage);
@@ -122,9 +122,9 @@
   }
 
   /**
-  * Убирает блок сообщения о статусе отправки формы из разметки
-  * @param {Object} messageBlock - блок статуса отправки формы
-  */
+   * Убирает блок сообщения о статусе отправки формы из разметки
+   * @param {Object} messageBlock - блок статуса отправки формы
+   */
   function eventOnSuccessMessagePopupHandler(messageBlock) {
     if (messageBlock) {
       var containerMessage = messageBlock.parentNode;
@@ -139,8 +139,8 @@
   }
 
   /**
-  * Обработчик клика по сообщению об успешной отправке
-  */
+   * Обработчик клика по сообщению об успешной отправке
+   */
   function onSuccessMessageClick() {
     var successBlock = document.querySelector('.success');
     eventOnSuccessMessagePopupHandler(successBlock);
@@ -149,9 +149,9 @@
   }
 
   /**
-  * Обработчик нажатия клавиши Escape по сообщению об успешной отправке
-  * @param {Object} evt
-  */
+   * Обработчик нажатия клавиши Escape по сообщению об успешной отправке
+   * @param {Object} evt
+   */
   function onSuccessMessageEscPress(evt) {
     if (evt.key === 'Escape') {
       var successBlock = document.querySelector('.success');
@@ -160,9 +160,9 @@
   }
 
   /**
-  * Убирает блок сообщения о ошибке отправки формы из разметки
-  * @param {Object} messageBlock - блок статуса отправки формы
-  */
+   * Убирает блок сообщения о ошибке отправки формы из разметки
+   * @param {Object} messageBlock - блок статуса отправки формы
+   */
   function eventOnErrorMessagePopupHandler(messageBlock) {
     if (messageBlock) {
       var containerMessage = messageBlock.parentNode;
@@ -175,17 +175,17 @@
   }
 
   /**
-  * Обработчик клика по сообщению об ошибке отправки
-  */
+   * Обработчик клика по сообщению об ошибке отправки
+   */
   function onErrorMessageClick() {
     var errorBlock = document.querySelector('.error');
     eventOnErrorMessagePopupHandler(errorBlock);
   }
 
   /**
-  * Обработчик нажатия клавиши Escape по сообщению об ошибке отправки
-  * @param {Object} evt
-  */
+   * Обработчик нажатия клавиши Escape по сообщению об ошибке отправки
+   * @param {Object} evt
+   */
   function onErrorMessageEscPress(evt) {
     if (evt.key === 'Escape') {
       var errorBlock = document.querySelector('.error');
@@ -194,9 +194,9 @@
   }
 
   /**
-  * Обработчик нажатия кнопки ошибки отправки
-  * @param {Object} evt
-  */
+   * Обработчик нажатия кнопки ошибки отправки
+   * @param {Object} evt
+   */
   function onErrorButtonClick(evt) {
     evt.preventDefault();
     var errorBlock = document.querySelector('.error');
@@ -204,9 +204,9 @@
   }
 
   /**
-  * Выводит сообщение о состоянии отправки формы на сервер
-  * @param {Object} typeMessage - отображаемое сообщение
-  */
+   * Выводит сообщение о состоянии отправки формы на сервер
+   * @param {Object} typeMessage - отображаемое сообщение
+   */
   function showMessageAboutUpLoad(typeMessage) {
     mainContentBlock.appendChild(typeMessage);
   }

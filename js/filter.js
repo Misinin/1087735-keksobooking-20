@@ -2,6 +2,7 @@
 
 (function () {
   var MAX_NUMBER_OFFERS_ON_MAP = 5;
+  var recivedOffers = [];
   var housingType = document.querySelector('#housing-type');
 
   /**
@@ -11,32 +12,32 @@
    */
   function slicePinData(objects) {
     var result = [];
-    result = shuffle(objects).slice(0, MAX_NUMBER_OFFERS_ON_MAP);
+    result = objects.slice(0, MAX_NUMBER_OFFERS_ON_MAP);
     return result;
   }
 
   /**
-   * Перемешивает массив случайным образом и возвращает его
-   * @param {Object} array - используемый массив
+   * Формирует массив предложений в зависимости от выбранного поля типа жилья
    * @return {Object}
    */
-  function shuffle(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
+  function filterTypeHousing() {
+    recivedOffers = window.main.dataPins;
+    if (housingType.value === 'any') {
+      var resultArray = slicePinData(recivedOffers);
+      recivedOffers = resultArray;
+      return recivedOffers;
     }
-    return array;
+    recivedOffers = recivedOffers.filter(function (offer) {
+      return housingType.value === offer.offer.type;
+    });
+    return recivedOffers;
   }
 
   housingType.addEventListener('change', filterTypeHousing);
 
-  function filterTypeHousing() {
-
-  }
-
   window.filter = {
-    pins: slicePinData
+    offers: recivedOffers,
+    maxNumberPins: MAX_NUMBER_OFFERS_ON_MAP,
+    typeHousing: filterTypeHousing
   };
 })();

@@ -12,8 +12,8 @@
   var select = document.querySelectorAll('select');
 
   /**
-  * Устанавливает странице неактивное состояние
-  */
+   * Устанавливает странице неактивное состояние
+   */
   function setPageToInactive() {
     document.querySelector('.map__pin--main').addEventListener('mousedown', MAIN.onMouseClickPageActive);
     document.querySelector('.map__pin--main').addEventListener('keydown', MAIN.onEnterPageActive);
