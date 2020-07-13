@@ -10,8 +10,8 @@
   var clonedOfferItem = offerItem.cloneNode(true);
 
   /**
-  * Убирает шаблонное значение цены предложения
-  */
+   * Убирает шаблонное значение цены предложения
+   */
   function clearFieldOfferPrice() {
     var priceOffer = clonedOfferItem.querySelector('.popup__text--price');
     var hTMLCollectionPriceOffer = priceOffer.childNodes;
@@ -19,17 +19,17 @@
   }
 
   /**
-  * Очищает поле features
-  */
+   * Очищает поле features
+   */
   function clearFieldFeatures() {
     clonedOfferItem.querySelector('.popup__features').innerHTML = '';
   }
 
   /**
-  * Созадет фрагмент разметки features на основании данных и возвращает его
-  * @param {Object} recivedFeatures - массив возможностей полученных извне
-  * @return {Object}
-  */
+   * Созадет фрагмент разметки features на основании данных и возвращает его
+   * @param {Object} recivedFeatures - массив возможностей полученных извне
+   * @return {Object}
+   */
   function createFeaturesFragment(recivedFeatures) {
     var featuresFragment = document.createDocumentFragment();
     recivedFeatures.forEach(function (feature) {
@@ -46,17 +46,17 @@
   var photoHeigth = photoItemTemplate.getAttribute('heigth');
 
   /**
-  * Очищает блок изображений в шаблоне
-  */
+   * Очищает блок изображений в шаблоне
+   */
   function clearPhotosField() {
     clonedOfferItem.querySelector('.popup__photos').innerHTML = '';
   }
 
   /**
-  * Созадет фрагмент фотографий здания и возвращает его
-  * @param {Object} recivedPhotos - массив фотографий полученных извне
-  * @return {Object}
-  */
+   * Созадет фрагмент фотографий здания и возвращает его
+   * @param {Object} recivedPhotos - массив фотографий полученных извне
+   * @return {Object}
+   */
   function createBuildingPhotosFragment(recivedPhotos) {
     clearPhotosField();
     var photosFragment = document.createDocumentFragment();
@@ -72,8 +72,8 @@
   }
 
   /**
-  * Закрывает карточку предложения
-  */
+   * Закрывает карточку предложения
+   */
   function closeCard() {
     var currentOffer = document.querySelector('.map .popup');
     if (currentOffer) {
@@ -84,8 +84,8 @@
   }
 
   /**
-  * Удаляет карту предложения из разметки
-  */
+   * Удаляет карту предложения из разметки
+   */
   function removeCard() {
     var currentOffer = document.querySelector('.map .popup');
     if (currentOffer) {
@@ -94,10 +94,10 @@
   }
 
   /**
-  * Проверяет нажатие клавиши Escape
-  * @param {Object} evt
-  * @param {Object} action - функция которую нужно выполнить
-  */
+   * Проверяет нажатие клавиши Escape
+   * @param {Object} evt
+   * @param {Object} action - функция которую нужно выполнить
+   */
   function onEscPressCardClose(evt) {
     if (evt.key === 'Escape') {
       closeCard();
@@ -105,10 +105,10 @@
   }
 
   /**
-  * Наполняет контентом шаблон карточки предложения
-  * @param {Object} objectOffer
-  * @return {Object}
-  */
+   * Наполняет контентом шаблон карточки предложения
+   * @param {Object} objectOffer
+   * @return {Object}
+   */
   function renderCard(objectOffer) {
     clonedOfferItem.querySelector('.popup__title').textContent = objectOffer.offer.title;
     clonedOfferItem.querySelector('.popup__text--address').textContent = objectOffer.offer.address;
@@ -116,6 +116,8 @@
     ' выезд до ' + objectOffer.offer.checkout;
     clonedOfferItem.querySelector('.popup__description').textContent = objectOffer.offer.description;
     clonedOfferItem.querySelector('.popup__avatar').src = objectOffer.author.avatar;
+    var typeHouse = objectOffer.offer.type.toUpperCase();
+    clonedOfferItem.querySelector('.popup__type').textContent = DATA.typeBuilding[typeHouse];
     clearFieldOfferPrice();
     clonedOfferItem.querySelector('.popup__text--price').insertAdjacentText('afterbegin', objectOffer.offer.price + '₽');
     var rooms = objectOffer.offer.rooms;

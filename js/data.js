@@ -30,7 +30,7 @@
     Y: 70
   };
 
-  var NUMBER_OF_OBJECTS = 8;
+  var NUMBER_OF_OBJECTS = 5;
 
   var Type = {
     PALACE: 'Дворец',
@@ -59,10 +59,10 @@
   };
 
   /**
-  * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
-  * @param {number} index -индекс для значения адреса аватарки
-  * @return {Object}
-  */
+   * Возвращает объект со свойством avatar, адрес которого случайно сгенерирован.
+   * @param {number} index -индекс для значения адреса аватарки
+   * @return {Object}
+   */
   function generateAuthorObject(index) {
     return {
       avatar: 'img/avatars/user0' + (index + 1) + '.png',
@@ -70,9 +70,9 @@
   }
 
   /**
-  * Возвращает объект offer со случайно полученными значениями свойств
-  * @return {Object}
-  */
+   * Возвращает объект offer со случайно полученными значениями свойств
+   * @return {Object}
+   */
   function generateRandomOffer() {
     return {
       title: 'Заголовок предложения',
@@ -91,9 +91,9 @@
   }
 
   /**
-  * Возвращает объект location со свойствaми координат x и y
-  * @return {Object}
-  */
+   * Возвращает объект location со свойствaми координат x и y
+   * @return {Object}
+   */
   function generateLocationObject() {
     return {
       x: UTIL.getRandomNumber(Сoordinate.MIN_X, Сoordinate.MAX_X),
@@ -102,10 +102,10 @@
   }
 
   /**
-  * Возвращает объект предложения с рандомными свойствами
-  * @param {number} index - индекс для значения адреса аватарки
-  * @return {Object}
-  */
+   * Возвращает объект предложения с рандомными свойствами
+   * @param {number} index - индекс для значения адреса аватарки
+   * @return {Object}
+   */
   function generateRandomObject(index) {
     return {
       author: generateAuthorObject(index),
@@ -115,10 +115,10 @@
   }
 
   /**
-  * Возвращает массив заданной длины, элементы массива объекты предложения
-  * @param {number} quantity - количесвто объектов в массиве
-  * @return {Object}
-  */
+   * Возвращает массив заданной длины, элементы массива объекты предложения
+   * @param {number} quantity - количесвто объектов в массиве
+   * @return {Object}
+   */
   function generateObjects(quantity) {
     var Objects = [];
     for (var i = 0; i < quantity; i++) {
@@ -128,13 +128,14 @@
   }
 
   /**
-  * Массив объектов предложений
-  */
+   * Массив объектов предложений
+   */
   var adObjects = generateObjects(NUMBER_OF_OBJECTS);
 
   window.data = {
     pinOffset: PinOffset,
     wordForms: wordForms,
     getRandomObjects: adObjects,
+    typeBuilding: Type
   };
 })();

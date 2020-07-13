@@ -8,8 +8,8 @@
   var capacityBuildingSelect = adForm.querySelector('#capacity');
 
   /**
-  * Выполняет валидацию заголовку по его длине
-  */
+   * Выполняет валидацию заголовку по его длине
+   */
   function validateHeadline() {
     var getMinLengthAttribute = headline.getAttribute('minlength');
     var getMaxLengthAttribute = headline.getAttribute('maxlength');
@@ -27,8 +27,8 @@
   }
 
   /**
-  * Выполняет валидацию заголовку по его длине в режиме ввода
-  */
+   * Выполняет валидацию заголовку по его длине в режиме ввода
+   */
   function validateHeadlineInput() {
     var HeadlineLength = {
       MIN: 30,
@@ -46,8 +46,8 @@
   }
 
   /**
-  * Выполняет валидацию поля 'Цена за ночь'
-  */
+   * Выполняет валидацию поля 'Цена за ночь'
+   */
   function priceFieldValidation() {
     var minPriceValue = rentalPricePerNight.getAttribute('min');
     var maxPriceValue = rentalPricePerNight.getAttribute('max');
@@ -63,8 +63,8 @@
   }
 
   /**
-  * Выполняет проверку соответствия выбранного количества комнат и количества гостей
-  */
+   * Выполняет проверку соответствия выбранного количества комнат и количества гостей
+   */
   function validationRoomsSelect() {
     var selectRoomsValue = roomNumberSelect.value;
     var selectGuestValue = capacityBuildingSelect.value;

@@ -43,10 +43,10 @@
   }
 
   /**
-  * Выполняет отправку запроса на сервер
-  * @param {Object} successAction - действия при получении данных с сервера
-  * @param {Object} errorAction - действия при получении ошибки с сервера
-  */
+   * Выполняет отправку запроса на сервер
+   * @param {Object} successAction - действия при получении данных с сервера
+   * @param {Object} errorAction - действия при получении ошибки с сервера
+   */
   function download(successAction, errorAction) {
     var xhr = createXHR(successAction, errorAction);
     xhr.open('GET', Url.GET);
@@ -54,11 +54,11 @@
   }
 
   /**
-  * Выполняет отправку данных на сервер
-  * @param {Object} data - данные для отправки
-  * @param {Object} successAction - действия при получении данных с сервера
-  * @param {Object} errorAction - действия при получении ошибки с сервера
-  */
+   * Выполняет отправку данных на сервер
+   * @param {Object} data - данные для отправки
+   * @param {Object} successAction - действия при получении данных с сервера
+   * @param {Object} errorAction - действия при получении ошибки с сервера
+   */
   function upLoad(data, successAction, errorAction) {
     var xhr = createXHR(successAction, errorAction);
     xhr.open('POST', Url.POST);
