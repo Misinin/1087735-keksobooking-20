@@ -76,6 +76,6 @@
   window.main = {
     onEnterPageActive: onEnterPressMapActivation,
     onMouseClickPageActive: onMainPinMouseDownHandler,
-    housingTypeFilter: onHousingTypeChange
+    housingTypeFilter: onHousingTypeChange,
   };
 })();

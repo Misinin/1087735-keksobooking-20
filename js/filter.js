@@ -1,43 +1,42 @@
 'use strict';
 
 (function () {
-  var MAX_NUMBER_OFFERS_ON_MAP = 5;
-  var recivedOffers = [];
-  var housingType = document.querySelector('#housing-type');
+  var PIN = window.pin;
+  var ANY = 'any';
+  var filteres = document.querySelector('.map__filters');
+  var selectHouseType = document.querySelector('#housing-type');
+  var selectHousePrice = document.querySelector('#housing-price');
+  var selectHouseRooms = document.querySelector('#housing-rooms');
+  var selectHouseGuests = document.querySelector('#housing-guests');
 
-  /**
-   * Отсекает от массива требуемое количество элементов и возвращает их
-   * @param {Object} objects - массив объектов
-   * @return {Object}
-   */
-  function slicePinData(objects) {
-    var result = [];
-    result = objects.slice(0, MAX_NUMBER_OFFERS_ON_MAP);
-    return result;
-  }
 
-  /**
-   * Формирует массив предложений в зависимости от выбранного поля типа жилья
-   * @return {Object}
-   */
-  function filterTypeHousing() {
-    recivedOffers = window.main.dataPins;
-    if (housingType.value === 'any') {
-      var resultArray = slicePinData(recivedOffers);
-      recivedOffers = resultArray;
-      return recivedOffers;
+  filteres.addEventListener('change', onChangeHandler);
+
+  function onChangeHandler() {
+    var houseType = selectHouseType.value;
+    var housePrice = selectHousePrice.value;
+    var houseRooms = selectHouseRooms.value.toString();
+    var houseGuests = selectHouseGuests.value.toString();
+
+    function filteredArray(element) {
+      var isType = true;
+      var isRooms = true;
+      var isGuests = true;
+      var isPrice = true;
+      var isFeatures = true;
+
+      if (houseType !== ANY) {
+        isType = element.offer.type === houseType;
+      }
+      return isType;
     }
-    recivedOffers = recivedOffers.filter(function (offer) {
-      return housingType.value === offer.offer.type;
-    });
-    return recivedOffers;
-  }
 
-  housingType.addEventListener('change', filterTypeHousing);
+    window.map.removeOfferPins();
+    window.map.removeCardOffer();
+    return window.main.dataPins.filter(filteredArray);
+  }
 
   window.filter = {
-    offers: recivedOffers,
-    maxNumberPins: MAX_NUMBER_OFFERS_ON_MAP,
-    typeHousing: filterTypeHousing
+    onChangeHandler: onChangeHandler
   };
 })();
