@@ -4,6 +4,7 @@
   var UTIL = window.util;
   var DATA = window.data;
   var MAP = window.map;
+  var CARD = window.card;
   var mapBlock = document.querySelector('.map');
   var offerTemplate = document.querySelector('#card').content;
   var offerItem = offerTemplate.querySelector('.map__card');
@@ -79,19 +80,20 @@
     if (currentOffer) {
       mapBlock.removeChild(currentOffer);
     }
-    mapBlock.removeEventListener('keydown', window.map.onEscPressPopupClose);
-    document.querySelector('.map__pins').addEventListener('click', MAP.onOfferPinCard);
+    clonedOfferItem.querySelector('.popup__close').removeEventListener('click', closeCard);
+    mapBlock.removeEventListener('keydown', window.card.onEscPressCardClose);
+    // document.querySelector('.map__pins').addEventListener('click', MAP.onOfferPinCard);
   }
 
-  /**
-   * Удаляет карту предложения из разметки
-   */
-  function removeCard() {
-    var currentOffer = document.querySelector('.map .popup');
-    if (currentOffer) {
-      mapBlock.removeChild(currentOffer);
-    }
-  }
+  // /**
+  //  * Удаляет карту предложения из разметки
+  //  */
+  // function removeCard() {
+  //   var currentOffer = document.querySelector('.map .popup');
+  //   if (currentOffer) {
+  //     mapBlock.removeChild(currentOffer);
+  //   }
+  // }
 
   /**
    * Проверяет нажатие клавиши Escape
@@ -128,6 +130,7 @@
     clonedOfferItem.querySelector('.popup__features').appendChild(createFeaturesFragment(objectOffer.offer.features));
     clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
     mapBlock.addEventListener('keydown', onEscPressCardClose);
+    clonedOfferItem.querySelector('.popup__close').addEventListener('click', closeCard);
     // document.querySelector('.map__pins').removeEventListener('click', MAP.onOfferPinCard);
 
     return clonedOfferItem;
@@ -135,7 +138,7 @@
 
   window.card = {
     render: renderCard,
-    remove: removeCard,
+    // remove: removeCard,
     close: closeCard
   };
 })();

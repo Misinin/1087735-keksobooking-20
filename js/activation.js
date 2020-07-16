@@ -17,7 +17,7 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     UTIL.setBooleanValueAttributeFieldset(fieldsets, false);
-    PIN.render(window.main.dataPins);
+    PIN.render(window.filter.getFilteredPins(window.main.dataPins));
     if (select[0].disabled === true) {
       UTIL.setBooleanValueAttributeFieldset(select, false);
     }
