@@ -2,7 +2,6 @@
 
 (function () {
   var UTIL = window.util;
-  var MAP = window.map;
   var DATA = window.data;
   var mapBlock = document.querySelector('.map');
   var offerTemplate = document.querySelector('#card').content;
