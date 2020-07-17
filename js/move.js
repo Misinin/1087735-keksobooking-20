@@ -7,7 +7,7 @@
   var pinHandle = document.querySelector('.map__pin--main');
   var mainPin = document.querySelector('.map__pin--main');
   var MainPinOffset = {
-    X: 32.5,
+    X: 32,
     Y: 82
   };
   var offsetPin = {
