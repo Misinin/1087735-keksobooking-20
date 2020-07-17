@@ -26,8 +26,6 @@
   function onOfferPinCard(evt) {
     if (getPinIdClikedOn(evt) !== null) {
       mapBlock.appendChild(window.card.render(window.filter.filteredArray(window.main.dataPins)[getPinIdClikedOn(evt)]));
-      var cardOffer = document.querySelector('.map .popup');
-      cardOffer.querySelector('.popup__close').addEventListener('click', removeCardOffer);
     }
   }
 
