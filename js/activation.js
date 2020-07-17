@@ -22,7 +22,7 @@
     if (select[0].disabled === true) {
       UTIL.setBooleanValueAttributeFieldset(select, false);
     }
-    mapFilters.addEventListener('change', window.main.onChangeHandler);
+    mapFilters.addEventListener('change', window.debounce(window.main.onChangeHandler));
   }
 
   window.activation = {

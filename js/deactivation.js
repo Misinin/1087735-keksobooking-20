@@ -21,6 +21,7 @@
     form.classList.add('ad-form--disabled');
     UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
     UTIL.setBooleanValueAttributeFieldset(select, true);
+    window.avatar.removePictures();
     MAP.removeOfferPins();
     CARD.remove();
     MOVE.start();
