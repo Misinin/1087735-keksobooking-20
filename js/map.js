@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var mapBlock = document.querySelector('.map');
   var CARD = window.card;
+  var mapBlock = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
 
   /**
@@ -25,27 +25,18 @@
    */
   function onOfferPinCard(evt) {
     if (getPinIdClikedOn(evt) !== null) {
-      mapBlock.appendChild(window.card.render(window.main.dataPins[getPinIdClikedOn(evt)]));
+      mapBlock.appendChild(window.card.render(window.filter.filteredArray(window.main.dataPins)[getPinIdClikedOn(evt)]));
       var cardOffer = document.querySelector('.map .popup');
-      cardOffer.querySelector('.popup__close').addEventListener('click', CARD.close);
+      cardOffer.querySelector('.popup__close').addEventListener('click', removeCardOffer);
     }
   }
 
-  function getNotEmptyArray() {
-    var responseArray = window.main.dataPins;
-    var filteredArray = window.filter.resultFilterArray;
-    if (responseArray.lenght) {
-      return responseArray;
-    }
-    return filteredArray;
+  /**
+   * Удаляет карточку предложения, если она отображена
+   */
+  function removeCardOffer() {
+    CARD.close();
   }
-
-  // /**
-  //  * Удаляет карточку предложения, если она отображена
-  //  */
-  // function removeCardOffer() {
-  //   CARD.close();
-  // }
 
   /**
    * Удаляет пины из разметки
@@ -59,7 +50,7 @@
 
   window.map = {
     onOfferPinCard: onOfferPinCard,
-    // removeCardOffer: removeCardOffer,
+    removeCardOffer: removeCardOffer,
     removeOfferPins: removeOfferPins
   };
 })();

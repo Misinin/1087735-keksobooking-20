@@ -109,7 +109,7 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseup);
-      // mainPin.addEventListener('mousedown', onMainPinMove);
+      mainPin.addEventListener('mousedown', onMainPinMove);
     }
 
     document.addEventListener('mouseup', onMouseup);

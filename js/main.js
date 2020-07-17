@@ -66,16 +66,16 @@
   mainPin.addEventListener('mousedown', onMainPinMouseDownHandler);
   mainPin.addEventListener('keydown', onEnterPressMapActivation);
 
-  function onHousingTypeChange(evt) {
+  function onChangeHandler(evt) {
     evt.preventDefault();
     CARD.close();
     MAP.removeOfferPins();
-    PIN.render(FILTER.typeHousing());
+    PIN.render(FILTER.filteredArray(window.main.dataPins));
   }
 
   window.main = {
     onEnterPageActive: onEnterPressMapActivation,
     onMouseClickPageActive: onMainPinMouseDownHandler,
-    housingTypeFilter: onHousingTypeChange,
+    onChangeHandler: onChangeHandler
   };
 })();

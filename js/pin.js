@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var DATA = window.data;
   var MAX_NUMBER_OFFERS_ON_MAP = 5;
+  var DATA = window.data;
   var templateObject = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
