@@ -1,43 +1,114 @@
 'use strict';
 
 (function () {
-  var MAX_NUMBER_OFFERS_ON_MAP = 5;
-  var recivedOffers = [];
-  var housingType = document.querySelector('#housing-type');
-
-  /**
-   * Отсекает от массива требуемое количество элементов и возвращает их
-   * @param {Object} objects - массив объектов
-   * @return {Object}
-   */
-  function slicePinData(objects) {
-    var result = [];
-    result = objects.slice(0, MAX_NUMBER_OFFERS_ON_MAP);
-    return result;
-  }
-
-  /**
-   * Формирует массив предложений в зависимости от выбранного поля типа жилья
-   * @return {Object}
-   */
-  function filterTypeHousing() {
-    recivedOffers = window.main.dataPins;
-    if (housingType.value === 'any') {
-      var resultArray = slicePinData(recivedOffers);
-      recivedOffers = resultArray;
-      return recivedOffers;
+  // var recivedOffers = [];
+  var priceRange = {
+    low: {
+      MIN: 0,
+      MAX: 10000
+    },
+    middle: {
+      MIN: 10000,
+      MAX: 50000
+    },
+    high: {
+      MIN: 50000,
+      MAX: Infinity
     }
-    recivedOffers = recivedOffers.filter(function (offer) {
-      return housingType.value === offer.offer.type;
-    });
-    return recivedOffers;
-  }
+  };
+  var ANY = 'any';
+  var filters = document.querySelector('.map__filters');
+  var houseType = filters.querySelector('#housing-type');
+  var housePrice = filters.querySelector('#housing-price');
+  var houseRooms = filters.querySelector('#housing-rooms');
+  var houseGuests = filters.querySelector('#housing-guests');
+  var houseFeatures = filters.querySelector('#housing-features');
 
-  housingType.addEventListener('change', filterTypeHousing);
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getFilteredAdsByType = function (element) {
+    return houseType.value === element.offer.type;
+  };
+
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getFilteredAdsByPrice = function (element) {
+    return priceRange[housePrice.value].MIN <= element.offer.price && priceRange[housePrice.value].MAX >= element.offer.price;
+  };
+
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getFilteredAdsByRooms = function (element) {
+    return (parseFloat(houseRooms.value) === element.offer.rooms);
+  };
+
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getFilteredAdsByGuests = function (element) {
+    return (parseFloat(houseGuests.value) === element.offer.guests);
+  };
+
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getCheckedFeatures = function () {
+    return Array.from(houseFeatures.querySelectorAll('input:checked')).map(function (ad) {
+      return ad.value;
+    });
+  };
+
+  /**
+   *
+   * @param {Object} element
+   * @return {Object}
+   */
+  var getFilteredAdsByFeatures = function (element) {
+    return getCheckedFeatures().every(function (feature) {
+      return element.offer.features.includes(feature);
+    });
+  };
+
+  /**
+   *
+   * @param {Array} objects
+   * @return {Array}
+   */
+  var getFilteredAds = function (objects) {
+    var filtered = objects;
+    var checkedFeatures = getCheckedFeatures();
+    if (houseType.value !== ANY) {
+      filtered = filtered.filter(getFilteredAdsByType);
+    }
+    if (housePrice.value !== ANY) {
+      filtered = filtered.filter(getFilteredAdsByPrice);
+    }
+    if (houseRooms.value !== ANY) {
+      filtered = filtered.filter(getFilteredAdsByRooms);
+    }
+    if (houseGuests.value !== ANY) {
+      filtered = filtered.filter(getFilteredAdsByGuests);
+    }
+    if (checkedFeatures.length > 0) {
+      filtered = filtered.filter(getFilteredAdsByFeatures);
+    }
+    return filtered;
+  };
 
   window.filter = {
-    offers: recivedOffers,
-    maxNumberPins: MAX_NUMBER_OFFERS_ON_MAP,
-    typeHousing: filterTypeHousing
+    filteredArray: getFilteredAds
   };
 })();

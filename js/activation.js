@@ -8,7 +8,7 @@
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
   var select = document.querySelectorAll('select');
-  var housingType = document.querySelector('#housing-type');
+  var mapFilters = document.querySelector('.map__filters');
 
   /**
    * Устанавливает странице активное состояние
@@ -18,11 +18,11 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     UTIL.setBooleanValueAttributeFieldset(fieldsets, false);
-    PIN.render(window.filter.typeHousing());
+    PIN.render(window.main.dataPins);
     if (select[0].disabled === true) {
       UTIL.setBooleanValueAttributeFieldset(select, false);
     }
-    housingType.addEventListener('change', window.main.housingTypeFilter);
+    mapFilters.addEventListener('change', window.main.onChangeHandler);
   }
 
   window.activation = {

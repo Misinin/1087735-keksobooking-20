@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MAX_NUMBER_OFFERS_ON_MAP = 5;
   var DATA = window.data;
   var templateObject = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
@@ -32,6 +33,7 @@
    * @return {Object}
    */
   function renderPins(objects) {
+    objects = (objects.length <= MAX_NUMBER_OFFERS_ON_MAP) ? objects : objects.slice(0, MAX_NUMBER_OFFERS_ON_MAP);
     objects.forEach(function (pin, index) {
 
       fragment.appendChild(createHtmlMarkingObject(pin, index));
