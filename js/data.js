@@ -3,7 +3,7 @@
 (function () {
   var UTIL = window.util;
 
-  var Сoordinate = {
+  var Coordinate = {
     MIN_Y: 130,
     MAX_Y: 630,
     MIN_X: 0,
@@ -76,8 +76,8 @@
   function generateRandomOffer() {
     return {
       title: 'Заголовок предложения',
-      address: UTIL.getRandomNumber(Сoordinate.MIN_X, Сoordinate.MAX_X)
-      + ', ' + UTIL.getRandomNumber(Сoordinate.MIN_Y, Сoordinate.MAX_Y),
+      address: UTIL.getRandomNumber(Coordinate.MIN_X, Coordinate.MAX_X)
+      + ', ' + UTIL.getRandomNumber(Coordinate.MIN_Y, Coordinate.MAX_Y),
       price: UTIL.getRandomNumber(Price.MIN, Price.MAX),
       type: UTIL.getRandomArrayElement(Object.keys(Type)),
       rooms: UTIL.getRandomNumber(Room.MIN, Room.MAX),
@@ -96,8 +96,8 @@
    */
   function generateLocationObject() {
     return {
-      x: UTIL.getRandomNumber(Сoordinate.MIN_X, Сoordinate.MAX_X),
-      y: UTIL.getRandomNumber(Сoordinate.MIN_Y, Сoordinate.MAX_Y)
+      x: UTIL.getRandomNumber(Coordinate.MIN_X, Coordinate.MAX_X),
+      y: UTIL.getRandomNumber(Coordinate.MIN_Y, Coordinate.MAX_Y)
     };
   }
 

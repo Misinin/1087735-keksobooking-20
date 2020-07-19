@@ -15,19 +15,6 @@
   UTIL.setBooleanValueAttributeFieldset(fieldsets, true);
   UTIL.setBooleanValueAttributeFieldset(select, true);
 
-  window.backend.load(responseSuccess, function () {
-    // console.error("Данные с сервера не получены");
-  });
-
-  /**
-   * Присваивает глобальной переменной данные полученные с сервера
-   * @param {Object} xhr
-   */
-  function responseSuccess(xhr) {
-    window.main.dataPins = xhr.response;
-    UTIL.setBooleanValueAttributeFieldset(select, false);
-  }
-
   /**
    * Активирует карту предложений, если по главному пину нажата левая кнопка мыши
    * @param {Object} evt
@@ -70,7 +57,7 @@
     evt.preventDefault();
     CARD.close();
     MAP.removeOfferPins();
-    PIN.render(FILTER.filteredArray(window.main.dataPins));
+    PIN.render(FILTER.filteredArray(window.activation.dataPins));
   }
 
   window.main = {

@@ -10,6 +10,18 @@
   var select = document.querySelectorAll('select');
   var mapFilters = document.querySelector('.map__filters');
 
+  // window.backend.load(responseSuccess, function () {});
+
+  /**
+   * Присваивает глобальной переменной данные полученные с сервера
+   * @param {Object} xhr
+   */
+  function responseSuccess(xhr) {
+    window.activation.dataPins = xhr.response;
+    PIN.render(window.activation.dataPins);
+    UTIL.setBooleanValueAttributeFieldset(select, false);
+  }
+
   /**
    * Устанавливает странице активное состояние
    */
@@ -18,7 +30,7 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     UTIL.setBooleanValueAttributeFieldset(fieldsets, false);
-    PIN.render(window.main.dataPins);
+    window.backend.load(responseSuccess, function () {});
     if (select[0].disabled === true) {
       UTIL.setBooleanValueAttributeFieldset(select, false);
     }

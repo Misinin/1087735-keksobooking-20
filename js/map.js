@@ -25,7 +25,7 @@
    */
   function onOfferPinCard(evt) {
     if (getPinIdClikedOn(evt) !== null) {
-      mapBlock.appendChild(window.card.render(window.filter.filteredArray(window.main.dataPins)[getPinIdClikedOn(evt)]));
+      mapBlock.appendChild(window.card.render(window.filter.filteredArray(window.activation.dataPins)[getPinIdClikedOn(evt)]));
     }
   }
 
@@ -48,7 +48,6 @@
 
   window.map = {
     onOfferPinCard: onOfferPinCard,
-    removeCardOffer: removeCardOffer,
     removeOfferPins: removeOfferPins
   };
 })();

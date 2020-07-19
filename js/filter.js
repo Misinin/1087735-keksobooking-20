@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  // var recivedOffers = [];
   var priceRange = {
     low: {
       MIN: 0,
