@@ -128,7 +128,6 @@
     clonedOfferItem.querySelector('.popup__photos').appendChild(createBuildingPhotosFragment(objectOffer.offer.photos));
     mapBlock.addEventListener('keydown', onEscPressCardClose);
     clonedOfferItem.querySelector('.popup__close').addEventListener('click', closeCard);
-    // document.querySelector('.map__pins').removeEventListener('click', MAP.onOfferPinCard);
 
     return clonedOfferItem;
   }

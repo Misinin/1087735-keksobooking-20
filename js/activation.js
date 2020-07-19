@@ -10,8 +10,6 @@
   var select = document.querySelectorAll('select');
   var mapFilters = document.querySelector('.map__filters');
 
-  // window.backend.load(responseSuccess, function () {});
-
   /**
    * Присваивает глобальной переменной данные полученные с сервера
    * @param {Object} xhr

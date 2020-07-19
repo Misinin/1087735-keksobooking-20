@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var CARD = window.card;
   var mapBlock = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
 
@@ -27,13 +26,6 @@
     if (getPinIdClikedOn(evt) !== null) {
       mapBlock.appendChild(window.card.render(window.filter.filteredArray(window.activation.dataPins)[getPinIdClikedOn(evt)]));
     }
-  }
-
-  /**
-   * Удаляет карточку предложения, если она отображена
-   */
-  function removeCardOffer() {
-    CARD.close();
   }
 
   /**
